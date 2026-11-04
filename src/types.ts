@@ -1,6 +1,14 @@
-export type ClientStatus = 'Active' | 'Completed' | 'Potential';
+export type ClientStatus = 'Active' | 'Completed' | 'Potential' | 'On Hold' | 'Inactive';
 
-export type ProjectStatus = 'Planning' | 'Active' | 'On Hold' | 'Completed';
+export type ProjectStatus =
+  | 'Planning'
+  | 'Started'
+  | 'Active'
+  | 'In Progress'
+  | 'On Hold'
+  | 'Review'
+  | 'Completed'
+  | 'Cancelled';
 
 export type TaskStatus = 'todo' | 'inprogress' | 'pending' | 'completed';
 
@@ -17,9 +25,21 @@ export type WorkCategory =
   | 'Administration'
   | 'Other';
 
-export type InvoiceStatus = 'Draft' | 'Sent' | 'Partially Paid' | 'Overdue' | 'Paid';
+export type InvoiceStatus = 'Draft' | 'Sent' | 'Partially Paid' | 'Overdue' | 'Paid' | 'Cancelled';
 
-export type PaymentMode = 'UPI' | 'Bank Transfer' | 'Cash' | 'Card' | 'Cheque';
+export type PaymentMode = 'UPI' | 'Bank Transfer' | 'Cash' | 'Card' | 'Cheque' | 'Other';
+
+export type ExpenseCategory =
+  | 'Software'
+  | 'Subscription'
+  | 'Internet'
+  | 'Equipment'
+  | 'Travel'
+  | 'Marketing'
+  | 'Personal Work'
+  | 'Other';
+
+export type ExpensePaymentMethod = 'Cash' | 'UPI' | 'Bank Transfer' | 'Card' | 'Other';
 
 export type PaymentType = 'Payment' | 'Refund';
 
@@ -41,6 +61,7 @@ export type ActivityType =
   | 'client'
   | 'project'
   | 'work'
+  | 'expense'
   | 'document'
   | 'system';
 
@@ -79,6 +100,8 @@ export interface Task {
   status: TaskStatus;
   priority: Priority;
   dueDate: string;
+  startDate?: string;
+  category?: string;
   projectId?: string;
   clientId?: string;
   comments: number;
@@ -118,6 +141,7 @@ export interface Invoice {
   notes: string;
   terms: string;
   draft: boolean;
+  cancelled?: boolean;
   createdAt: string;
 }
 
@@ -144,6 +168,20 @@ export interface AppDocument {
   projectId?: string;
   uploadDate: string;
   notes: string;
+}
+
+export interface Expense {
+  id: string;
+  name: string;
+  category: ExpenseCategory;
+  amount: number;
+  date: string;
+  paymentMethod: ExpensePaymentMethod;
+  description: string;
+  clientId?: string;
+  projectId?: string;
+  receiptName?: string;
+  createdAt: string;
 }
 
 export interface Activity {
@@ -194,7 +232,141 @@ export interface AppState {
   workEntries: WorkEntry[];
   invoices: Invoice[];
   payments: Payment[];
+  expenses: Expense[];
   documents: AppDocument[];
   activities: Activity[];
   settings: Settings;
+}
+
+export type SubjectPriority = 'Low' | 'Medium' | 'High';
+
+export interface Subject {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+  icon: string;
+  targetHours: number;
+  targetDate: string;
+  priority: SubjectPriority;
+  progress: number;
+  completedChapters: number;
+  totalChapters: number;
+  lastStudied?: string;
+  createdAt: string;
+}
+
+export interface StudySchedule {
+  id: string;
+  subjectId: string;
+  day: number;
+  startTime: string;
+  endTime: string;
+  notes: string;
+  repeat: boolean;
+  completed: boolean;
+  createdAt: string;
+}
+
+export type StudySessionType = 'Stopwatch' | 'Pomodoro' | 'Countdown' | 'Manual';
+
+export interface StudySession {
+  id: string;
+  subjectId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  durationMinutes: number;
+  type: StudySessionType;
+  notes: string;
+  completed: boolean;
+  createdAt: string;
+}
+
+export interface StudyNote {
+  id: string;
+  subjectId?: string;
+  title: string;
+  content: string;
+  tags: string[];
+  pinned: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StudyShare {
+  token: string;
+  enabled: boolean;
+  expiresAt?: string;
+  createdAt: string;
+}
+
+export interface StudyResource {
+  id: string;
+  title: string;
+  subjectId?: string;
+  description: string;
+  tags: string[];
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  dataUrl?: string;
+  uploadedAt: string;
+  share?: StudyShare;
+}
+
+export interface StudyEvent {
+  id: string;
+  title: string;
+  date: string;
+  type: 'Exam' | 'Deadline' | 'Reminder';
+  notes: string;
+}
+
+export interface StudyGoals {
+  dailyHours: number;
+  weeklyHours: number;
+  monthlyHours: number;
+}
+
+export interface StudyProfile {
+  name: string;
+  email: string;
+  workspace: string;
+  bio: string;
+}
+
+export interface StudySettings {
+  profile: StudyProfile;
+  goals: StudyGoals;
+  theme: Theme;
+  reminders: boolean;
+}
+
+export interface StudyState {
+  subjects: Subject[];
+  schedules: StudySchedule[];
+  sessions: StudySession[];
+  notes: StudyNote[];
+  resources: StudyResource[];
+  events: StudyEvent[];
+  settings: StudySettings;
+}
+
+export type TimerMode = 'stopwatch' | 'pomodoro' | 'countdown';
+export type TimerPhase = 'focus' | 'shortBreak' | 'longBreak';
+
+export interface StudyTimerState {
+  running: boolean;
+  mode: TimerMode;
+  subjectId: string;
+  description: string;
+  startedAt: number | null;
+  accumulatedSeconds: number;
+  pomodoroMinutes: number;
+  shortBreakMinutes: number;
+  longBreakMinutes: number;
+  countdownMinutes: number;
+  phase: TimerPhase;
+  round: number;
 }

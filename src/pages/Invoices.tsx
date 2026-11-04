@@ -346,7 +346,7 @@ export function InvoicesPage() {
                           items={[
                             { label: 'View invoice', icon: Eye, onClick: () => setViewingId(invoice.id) },
                             { label: 'Edit invoice', icon: Pencil, onClick: () => openEdit(invoice) },
-                            { label: 'Record payment', icon: Wallet, onClick: () => navigate(`/payments?create=1&invoice=${invoice.id}`) },
+                            { label: 'Record payment', icon: Wallet, onClick: () => navigate(`/work//payments?create=1&invoice=${invoice.id}`) },
                             { label: 'Download PDF', icon: Download, onClick: () => handleDownload(invoice), separator: true },
                             { label: 'Print', icon: Printer, onClick: () => handlePrint(invoice) },
                             { label: 'Duplicate', icon: Copy, onClick: () => handleDuplicate(invoice) },
@@ -383,7 +383,7 @@ export function InvoicesPage() {
           onDownload={() => handleDownload(viewing)}
           onRecordPayment={() => {
             setViewingId(null);
-            navigate(`/payments?create=1&invoice=${viewing.id}`);
+            navigate(`/work//payments?create=1&invoice=${viewing.id}`);
           }}
         />
       )}
@@ -495,7 +495,7 @@ function InvoiceSheet({ invoice }: { invoice: Invoice }) {
       <div className="flex flex-col gap-4 border-b border-[#EAEAEA] pb-5 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#C02050] to-[#9F1239] text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#7C6FE0] to-[#6558D3] text-white">
               <FileText className="h-4 w-4" />
             </span>
             <div>
@@ -564,7 +564,7 @@ function InvoiceSheet({ invoice }: { invoice: Invoice }) {
           )}
           <div className="flex justify-between border-t border-[#EAEAEA] pt-2 text-[12px] font-semibold"><span>Grand total</span><span>{formatMoney(total)}</span></div>
           <div className="flex justify-between text-[#666666]"><span>Amount paid</span><span>{formatMoney(paid)}</span></div>
-          <div className="flex justify-between font-semibold text-[#9F1239]"><span>Balance due</span><span>{formatMoney(remaining)}</span></div>
+          <div className="flex justify-between font-semibold text-[#6558D3]"><span>Balance due</span><span>{formatMoney(remaining)}</span></div>
         </div>
       </div>
 

@@ -278,6 +278,7 @@ export function invoicePaid(invoiceId: string, payments: Payment[]): number {
 }
 
 export function invoiceStatus(invoice: Invoice, payments: Payment[], today = todayISO()): InvoiceStatus {
+  if (invoice.cancelled) return 'Cancelled';
   if (invoice.draft) return 'Draft';
   const total = invoiceTotal(invoice);
   const paid = invoicePaid(invoice.id, payments);
@@ -300,7 +301,7 @@ export function paymentStatus(payment: Payment, invoices: Invoice[], payments: P
 export const TASK_STATUS_LABEL: Record<TaskStatus, string> = {
   todo: 'To Do',
   inprogress: 'In Progress',
-  pending: 'Pending',
+  pending: 'On Hold',
   completed: 'Completed',
 };
 

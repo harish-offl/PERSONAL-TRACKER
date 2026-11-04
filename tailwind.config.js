@@ -32,11 +32,11 @@ export default {
           soft: 'var(--accent-soft)',
         },
         success: {
-          DEFAULT: '#16A34A',
+          DEFAULT: '#16865C',
           soft: 'var(--success-soft)',
         },
         warning: {
-          DEFAULT: '#F59E0B',
+          DEFAULT: '#D97757',
           soft: 'var(--warning-soft)',
         },
         danger: {

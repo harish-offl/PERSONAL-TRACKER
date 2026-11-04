@@ -3,45 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --bg-app: #ffffff;
-  --bg-sidebar: #ffffff;
-  --bg-content: #ffffff;
+  --bg-app: #f7f7f5;
+  --bg-sidebar: #f7f7f5;
+  --bg-content: #f7f7f5;
   --bg-card: #ffffff;
-  --bg-secondary: #f7f7f7;
-  --text-primary: #080808;
-  --text-secondary: #666666;
-  --text-muted: #858585;
-  --border-primary: #eaeaea;
-  --border-secondary: #f3f3f3;
-  --accent: #9f1239;
-  --accent-hover: #7f0e2e;
-  --accent-strong: #9f1239;
-  --accent-soft: rgba(159, 18, 57, 0.09);
-  --success-soft: rgba(22, 163, 74, 0.1);
-  --warning-soft: rgba(245, 158, 11, 0.12);
-  --danger-soft: rgba(239, 68, 68, 0.1);
+  --bg-secondary: #f1f0ee;
+  --text-primary: #171717;
+  --text-secondary: #737373;
+  --text-muted: #a3a3a3;
+  --border-primary: #e7e5e4;
+  --border-secondary: #f0eeeb;
+  --accent: #6558d3;
+  --accent-hover: #5649c0;
+  --accent-strong: #6558d3;
+  --accent-soft: rgba(101, 88, 211, 0.09);
+  --success-soft: rgba(22, 134, 92, 0.1);
+  --warning-soft: rgba(217, 119, 87, 0.12);
+  --danger-soft: rgba(220, 38, 38, 0.1);
   --info-soft: rgba(59, 130, 246, 0.1);
   color-scheme: light;
 }
 
 .dark {
-  --bg-app: #080808;
-  --bg-sidebar: #0d0d0d;
-  --bg-content: #0a0a0a;
-  --bg-card: #121212;
-  --bg-secondary: #191919;
-  --text-primary: #fafafa;
-  --text-secondary: #b3b3b3;
-  --text-muted: #7a7a7a;
-  --border-primary: #2a2a2a;
-  --border-secondary: #202020;
-  --accent: #9f1239;
-  --accent-hover: #b91c4a;
-  --accent-strong: #fb7185;
-  --accent-soft: rgba(159, 18, 57, 0.22);
-  --success-soft: rgba(22, 163, 74, 0.16);
-  --warning-soft: rgba(245, 158, 11, 0.16);
-  --danger-soft: rgba(239, 68, 68, 0.16);
+  --bg-app: #111111;
+  --bg-sidebar: #111111;
+  --bg-content: #111111;
+  --bg-card: #1b1b1b;
+  --bg-secondary: #242424;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
+  --border-primary: #303030;
+  --border-secondary: #252525;
+  --accent: #8578ef;
+  --accent-hover: #9a8ff5;
+  --accent-strong: #a99ff8;
+  --accent-soft: rgba(133, 120, 239, 0.16);
+  --success-soft: rgba(22, 134, 92, 0.16);
+  --warning-soft: rgba(217, 119, 87, 0.16);
+  --danger-soft: rgba(220, 38, 38, 0.16);
   --info-soft: rgba(59, 130, 246, 0.16);
   color-scheme: dark;
 }
@@ -61,7 +61,7 @@
     min-height: 100vh;
     background-color: var(--bg-app);
     color: var(--text-primary);
-    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

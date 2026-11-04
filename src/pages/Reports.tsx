@@ -74,7 +74,7 @@ const INVOICE_STATUS_COLORS: Record<InvoiceStatus, string> = {
 };
 
 const PROJECT_STATUS_COLORS: Record<ProjectStatus, string> = {
-  Active: '#9F1239',
+  Active: '#6558D3',
   Planning: '#3B82F6',
   'On Hold': '#F59E0B',
   Completed: '#16A34A',
@@ -434,8 +434,8 @@ export function ReportsPage() {
                   <AreaChart data={incomeSeries} margin={{ top: 8, right: 8, left: -14, bottom: 0 }}>
                     <defs>
                       <linearGradient id="incomeFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#9F1239" stopOpacity={0.28} />
-                        <stop offset="100%" stopColor="#9F1239" stopOpacity={0.02} />
+                        <stop offset="0%" stopColor="#6558D3" stopOpacity={0.28} />
+                        <stop offset="100%" stopColor="#6558D3" stopOpacity={0.02} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EAEAEA" />
@@ -454,14 +454,14 @@ export function ReportsPage() {
                       width={54}
                     />
                     <Tooltip
-                      cursor={{ stroke: '#9F1239', strokeWidth: 1, strokeDasharray: '4 4' }}
+                      cursor={{ stroke: '#6558D3', strokeWidth: 1, strokeDasharray: '4 4' }}
                       contentStyle={tooltipStyle}
                       formatter={(value) => [formatMoney(Number(value)), 'Net income']}
                     />
                     <Area
                       type="monotone"
                       dataKey="income"
-                      stroke="#9F1239"
+                      stroke="#6558D3"
                       strokeWidth={2}
                       fill="url(#incomeFill)"
                       activeDot={{ r: 4, strokeWidth: 2, stroke: '#fff' }}
@@ -550,11 +550,11 @@ export function ReportsPage() {
                         tick={{ fontSize: 9.5, fill: '#666666' }}
                       />
                       <Tooltip
-                        cursor={{ fill: 'rgba(159,18,57,0.10)' }}
+                        cursor={{ fill: 'rgba(101,88,211,0.10)' }}
                         contentStyle={tooltipStyle}
                         formatter={(value) => [formatMoney(Number(value)), 'Received']}
                       />
-                      <Bar dataKey="received" fill="#9F1239" radius={[0, 4, 4, 0]} maxBarSize={16} />
+                      <Bar dataKey="received" fill="#6558D3" radius={[0, 4, 4, 0]} maxBarSize={16} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -719,11 +719,11 @@ export function ReportsPage() {
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9.5, fill: '#666666' }} dy={6} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: '#858585' }} />
                       <Tooltip
-                        cursor={{ fill: 'rgba(159,18,57,0.10)' }}
+                        cursor={{ fill: 'rgba(101,88,211,0.10)' }}
                         contentStyle={tooltipStyle}
                         formatter={(value) => [`${value}h`, 'Logged']}
                       />
-                      <Bar dataKey="hours" fill="#9F1239" radius={[4, 4, 0, 0]} maxBarSize={36} />
+                      <Bar dataKey="hours" fill="#6558D3" radius={[4, 4, 0, 0]} maxBarSize={36} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

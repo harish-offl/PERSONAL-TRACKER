@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -84,14 +84,14 @@ export function ProjectDetailPage() {
   if (!project || !data) {
     return (
       <div className="space-y-4">
-        <Link to="/projects" className="inline-flex items-center gap-1.5 text-[11px] font-medium text-soft hover:text-ink">
+        <Link to="/work//projects" className="inline-flex items-center gap-1.5 text-[11px] font-medium text-soft hover:text-ink">
           <ArrowLeft className="h-3.5 w-3.5" /> Back to projects
         </Link>
         <EmptyState
           icon={FolderKanban}
           title="Project not found"
           description="This project may have been removed, or the link is out of date."
-          action={<Button variant="primary" size="sm" onClick={() => navigate('/projects')}>View all projects</Button>}
+          action={<Button variant="primary" size="sm" onClick={() => navigate('/work/projects')}>View all projects</Button>}
         />
       </div>
     );
@@ -133,7 +133,7 @@ export function ProjectDetailPage() {
     <div className="space-y-4">
       <PageHeader
         title={project.name}
-        description={`${project.code} · ${client?.businessName ?? 'Personal project'} · ${formatDate(project.startDate)} – ${formatDate(project.endDate)}`}
+        description={`${project.code} Â· ${client?.businessName ?? 'Personal project'} Â· ${formatDate(project.startDate)} â€“ ${formatDate(project.endDate)}`}
         badge={<StatusBadge status={project.status} />}
         actions={
           <>
@@ -141,7 +141,7 @@ export function ProjectDetailPage() {
               <Pencil className="h-3.5 w-3.5" />
               Edit
             </Button>
-            <Button variant="primary" size="md" onClick={() => navigate('/tasks?create=1')}>
+            <Button variant="primary" size="md" onClick={() => navigate('/work/tasks?create=1')}>
               <Plus className="h-3.5 w-3.5" />
               New Task
             </Button>
@@ -149,8 +149,8 @@ export function ProjectDetailPage() {
               label="Project options"
               size="icon"
               items={[
-                { label: 'Create invoice', onClick: () => navigate(`/invoices?create=1&client=${project.clientId}&project=${project.id}`) },
-                { label: 'Upload document', onClick: () => navigate('/documents?upload=1') },
+                { label: 'Create invoice', onClick: () => navigate(`/work//invoices?create=1&client=${project.clientId}&project=${project.id}`) },
+                { label: 'Upload document', onClick: () => navigate('/work/documents?upload=1') },
                 { label: 'Delete project', icon: Trash2, onClick: () => setDeleteOpen(true), danger: true, separator: true },
               ]}
             />
@@ -172,7 +172,7 @@ export function ProjectDetailPage() {
             <div>
               <p className="text-[12px] font-semibold text-ink">{client?.businessName ?? 'Personal project'}</p>
               <p className="mt-0.5 text-[10.5px] text-muted">
-                {client?.name ?? 'No client'} {client?.phone ? `· ${client.phone}` : ''}
+                {client?.name ?? 'No client'} {client?.phone ? `Â· ${client.phone}` : ''}
               </p>
             </div>
           </div>
@@ -224,9 +224,9 @@ export function ProjectDetailPage() {
                       >
                         <CheckMark />
                       </button>
-                      <button type="button" onClick={() => navigate(`/tasks?task=${task.id}`)} className="min-w-0 flex-1 text-left">
+                      <button type="button" onClick={() => navigate(`/work//tasks?task=${task.id}`)} className="min-w-0 flex-1 text-left">
                         <p className={cn('truncate text-[11px] font-medium text-ink', task.status === 'completed' && 'line-through text-muted')}>{task.title}</p>
-                        <p className="mt-0.5 text-[9.5px] text-muted">{task.id} · Due {formatDateShort(task.dueDate)}</p>
+                        <p className="mt-0.5 text-[9.5px] text-muted">{task.id} Â· Due {formatDateShort(task.dueDate)}</p>
                       </button>
                       <PriorityBadge priority={task.priority} />
                     </div>
@@ -248,7 +248,7 @@ export function ProjectDetailPage() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[11px] font-medium text-ink">{entry.title}</p>
-                        <p className="mt-0.5 text-[9.5px] text-muted">{entry.startTime} – {entry.endTime} · {formatDuration(workDuration(entry.startTime, entry.endTime))}</p>
+                        <p className="mt-0.5 text-[9.5px] text-muted">{entry.startTime} â€“ {entry.endTime} Â· {formatDuration(workDuration(entry.startTime, entry.endTime))}</p>
                       </div>
                       <Badge tone="gray">{entry.category}</Badge>
                     </div>
@@ -292,7 +292,7 @@ export function ProjectDetailPage() {
                     <p className="flex items-center gap-2"><Users className="h-3 w-3 text-muted" />{client.phone}</p>
                     <p className="flex items-center gap-2"><CalendarDays className="h-3 w-3 text-muted" />Client since {formatDate(client.createdAt)}</p>
                   </div>
-                  <Button variant="secondary" size="sm" className="mt-3 w-full" onClick={() => navigate(`/clients/${client.id}`)}>
+                  <Button variant="secondary" size="sm" className="mt-3 w-full" onClick={() => navigate(`/work//clients/${client.id}`)}>
                     Open client profile
                   </Button>
                 </div>
@@ -328,9 +328,9 @@ export function ProjectDetailPage() {
                   >
                     <CheckMark />
                   </button>
-                  <button type="button" onClick={() => navigate(`/tasks?task=${task.id}`)} className="min-w-0 flex-1 text-left">
+                  <button type="button" onClick={() => navigate(`/work//tasks?task=${task.id}`)} className="min-w-0 flex-1 text-left">
                     <p className={cn('truncate text-[11.5px] font-medium text-ink', task.status === 'completed' && 'line-through text-muted')}>{task.title}</p>
-                    <p className="mt-0.5 text-[9.5px] text-muted">{task.id} · Due {formatDate(task.dueDate)}</p>
+                    <p className="mt-0.5 text-[9.5px] text-muted">{task.id} Â· Due {formatDate(task.dueDate)}</p>
                   </button>
                   <PriorityBadge priority={task.priority} />
                   <StatusBadge status={task.status === 'inprogress' ? 'In Progress' : task.status === 'todo' ? 'To Do' : task.status === 'pending' ? 'Pending' : 'Completed'} />
@@ -338,7 +338,7 @@ export function ProjectDetailPage() {
               ))}
             </div>
           ) : (
-            <EmptyState icon={ListChecks} title="No tasks yet" description="Create a task to start breaking down this project." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate('/tasks?create=1')}>Create task</Button>} />
+            <EmptyState icon={ListChecks} title="No tasks yet" description="Create a task to start breaking down this project." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate('/work/tasks?create=1')}>Create task</Button>} />
           )}
         </div>
       )}
@@ -355,7 +355,7 @@ export function ProjectDetailPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[11.5px] font-medium text-ink">{entry.title}</p>
-                    <p className="mt-0.5 text-[9.5px] text-muted">{entry.startTime} – {entry.endTime} · {entry.category} · {formatDuration(workDuration(entry.startTime, entry.endTime))}</p>
+                    <p className="mt-0.5 text-[9.5px] text-muted">{entry.startTime} â€“ {entry.endTime} Â· {entry.category} Â· {formatDuration(workDuration(entry.startTime, entry.endTime))}</p>
                   </div>
                   <Badge tone="gray">{entry.status}</Badge>
                 </div>
@@ -384,7 +384,7 @@ export function ProjectDetailPage() {
               </thead>
               <tbody>
                 {data.invoices.map((invoice) => (
-                  <TableRow key={invoice.id} onClick={() => navigate(`/invoices?invoice=${invoice.id}`)}>
+                  <TableRow key={invoice.id} onClick={() => navigate(`/work//invoices?invoice=${invoice.id}`)}>
                     <Td><span className="font-medium text-ink">{invoice.id}</span></Td>
                     <Td>{formatDate(invoice.issueDate)}</Td>
                     <Td>{formatDate(invoice.dueDate)}</Td>
@@ -397,7 +397,7 @@ export function ProjectDetailPage() {
               </tbody>
             </DataTable>
           ) : (
-            <EmptyState icon={FileText} title="No invoices yet" description="Create an invoice to bill this project." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate(`/invoices?create=1&client=${project.clientId}&project=${project.id}`)}>Create invoice</Button>} />
+            <EmptyState icon={FileText} title="No invoices yet" description="Create an invoice to bill this project." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate(`/work//invoices?create=1&client=${project.clientId}&project=${project.id}`)}>Create invoice</Button>} />
           )}
         </div>
       )}
@@ -423,7 +423,7 @@ export function ProjectDetailPage() {
                     <Td>{formatDate(payment.date)}</Td>
                     <Td>{payment.mode}</Td>
                     <Td><span className="font-mono text-[10.5px]">{payment.reference}</span></Td>
-                    <Td align="right"><span className={cn('font-medium', payment.type === 'Refund' ? 'text-danger' : 'text-ink')}>{payment.type === 'Refund' ? '−' : ''}{formatMoney(payment.amount)}</span></Td>
+                    <Td align="right"><span className={cn('font-medium', payment.type === 'Refund' ? 'text-danger' : 'text-ink')}>{payment.type === 'Refund' ? 'âˆ’' : ''}{formatMoney(payment.amount)}</span></Td>
                     <Td><StatusBadge status={payment.type === 'Refund' ? 'Refunded' : 'Recorded'} /></Td>
                   </TableRow>
                 ))}
@@ -439,17 +439,17 @@ export function ProjectDetailPage() {
         data.documents.length ? (
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {data.documents.map((doc) => (
-              <button key={doc.id} type="button" onClick={() => navigate(`/documents?doc=${doc.id}`)} className="flex items-center gap-3 rounded-xl border border-line bg-card p-3 text-left shadow-card transition hover:border-accent/30">
+              <button key={doc.id} type="button" onClick={() => navigate(`/work//documents?doc=${doc.id}`)} className="flex items-center gap-3 rounded-xl border border-line bg-card p-3 text-left shadow-card transition hover:border-accent/30">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-secondary text-soft"><Files className="h-4 w-4" /></span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[11.5px] font-medium text-ink">{doc.name}</span>
-                  <span className="mt-0.5 block text-[9.5px] text-muted">{doc.category} · {formatDateShort(doc.uploadDate)}</span>
+                  <span className="mt-0.5 block text-[9.5px] text-muted">{doc.category} Â· {formatDateShort(doc.uploadDate)}</span>
                 </span>
               </button>
             ))}
           </div>
         ) : (
-          <EmptyState icon={Files} title="No documents yet" description="Upload project briefs, brand assets and contracts." action={<Button variant="secondary" size="sm" onClick={() => navigate('/documents?upload=1')}>Upload files</Button>} />
+          <EmptyState icon={Files} title="No documents yet" description="Upload project briefs, brand assets and contracts." action={<Button variant="secondary" size="sm" onClick={() => navigate('/work/documents?upload=1')}>Upload files</Button>} />
         )
       )}
 
@@ -476,10 +476,10 @@ export function ProjectDetailPage() {
         onConfirm={() => {
           deleteProject(project.id);
           toast({ title: 'Project removed', description: project.name });
-          navigate('/projects');
+          navigate('/work/projects');
         }}
         title="Delete this project?"
-        description={`“${project.name}” will be removed along with its linked tasks and daily work entries. Invoices will remain without a project.`}
+        description={`â€œ${project.name}â€ will be removed along with its linked tasks and daily work entries. Invoices will remain without a project.`}
       />
     </div>
   );
@@ -512,3 +512,4 @@ function CheckMark() {
     </svg>
   );
 }
+

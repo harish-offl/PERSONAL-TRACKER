@@ -202,7 +202,7 @@ export function ProjectsPage() {
             <ProjectCard
               key={project.id}
               project={project}
-              onOpen={() => navigate(`/projects/${project.id}`)}
+              onOpen={() => navigate(`/work//projects/${project.id}`)}
               onEdit={() => {
                 setEditing(project);
                 setFormOpen(true);
@@ -231,7 +231,7 @@ export function ProjectsPage() {
               {filtered.map((project) => {
                 const client = getClient(state, project.clientId);
                 return (
-                  <TableRow key={project.id} onClick={() => navigate(`/projects/${project.id}`)}>
+                  <TableRow key={project.id} onClick={() => navigate(`/work//projects/${project.id}`)}>
                     <Td>
                       <div className="min-w-0">
                         <p className="truncate text-[12px] font-medium text-ink">{project.name}</p>
@@ -261,7 +261,7 @@ export function ProjectsPage() {
                         <ActionMenu
                           label={`Actions for ${project.name}`}
                           items={[
-                            { label: 'Open project', onClick: () => navigate(`/projects/${project.id}`) },
+                            { label: 'Open project', onClick: () => navigate(`/work//projects/${project.id}`) },
                             { label: 'Edit project', onClick: () => { setEditing(project); setFormOpen(true); } },
                             { label: 'Delete project', onClick: () => setDeleting(project), danger: true, separator: true },
                           ]}
@@ -276,9 +276,9 @@ export function ProjectsPage() {
         </div>
       )}
 
-      {filtered.length > 0 && view === 'timeline' && <ProjectTimeline projects={filtered} onOpen={(id) => navigate(`/projects/${id}`)} />}
+      {filtered.length > 0 && view === 'timeline' && <ProjectTimeline projects={filtered} onOpen={(id) => navigate(`/work//projects/${id}`)} />}
 
-      {filtered.length > 0 && view === 'calendar' && <ProjectCalendar projects={filtered} onOpen={(id) => navigate(`/projects/${id}`)} />}
+      {filtered.length > 0 && view === 'calendar' && <ProjectCalendar projects={filtered} onOpen={(id) => navigate(`/work//projects/${id}`)} />}
 
       {formOpen && (
         <ProjectFormModal

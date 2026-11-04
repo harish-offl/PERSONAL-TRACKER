@@ -44,7 +44,7 @@ export function downloadInvoicePDF({
   const balance = Math.max(0, total - paid);
   const status = invoiceStatus(invoice, payments);
 
-  doc.setFillColor(159, 18, 57);
+  doc.setFillColor(101, 88, 211);
   doc.rect(0, 0, pageWidth, 3, 'F');
 
   doc.setTextColor(8, 8, 8);
@@ -172,7 +172,7 @@ export function downloadInvoicePDF({
   totalY += 4;
   totalRow('Grand total', pdfMoney(total, currency), true);
   totalRow('Amount paid', pdfMoney(paid, currency));
-  doc.setTextColor(159, 18, 57);
+  doc.setTextColor(101, 88, 211);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
   doc.text('Balance due', totalsX, totalY);
@@ -233,7 +233,7 @@ export function printInvoice({ invoice, client, project, payments, settings }: I
 <html><head><meta charset="utf-8" /><title>${escapeHtml(invoice.id)}</title>
 <style>
   *{box-sizing:border-box} body{font-family:Inter,-apple-system,Segoe UI,sans-serif;color:#080808;margin:0;padding:40px;font-size:12px;line-height:1.5}
-  .page{max-width:760px;margin:0 auto} .top{height:5px;background:#9F1239;border-radius:99px;margin-bottom:28px}
+  .page{max-width:760px;margin:0 auto} .top{height:5px;background:#6558D3;border-radius:99px;margin-bottom:28px}
   .header{display:flex;justify-content:space-between;gap:24px;margin-bottom:28px}
   h1{font-size:28px;letter-spacing:-.03em;margin:0 0 4px} .muted{color:#666666} .tiny{font-size:10px;color:#858585;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
   .right{text-align:right} .badge{display:inline-block;border:1px solid #EAEAEA;background:#F7F7F7;border-radius:99px;padding:3px 10px;font-size:10px;margin-bottom:8px}
@@ -242,7 +242,7 @@ export function printInvoice({ invoice, client, project, payments, settings }: I
   td{padding:10px;border-bottom:1px solid #EAEAEA;vertical-align:top} .num{text-align:right;white-space:nowrap}
   .totals{margin-left:auto;width:280px} .row{display:flex;justify-content:space-between;padding:4px 0;color:#666666} .row strong{color:#080808}
   .grand{border-top:1px solid #EAEAEA;margin-top:6px;padding-top:9px;font-size:14px;font-weight:600;color:#080808}
-  .balance{color:#9F1239;font-weight:600}
+  .balance{color:#6558D3;font-weight:600}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:1px solid #EAEAEA;padding-top:16px;margin-top:24px}
   .footer{margin-top:36px;font-size:9px;color:#858585;text-align:center}
   @media print{body{padding:0}.page{max-width:none}}

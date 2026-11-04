@@ -70,7 +70,7 @@ export function Sidebar({
             collapsed && 'lg:justify-center lg:px-2',
           )}
         >
-          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-[#C02050] via-[#9F1239] to-[#7F0E2E] text-white shadow-[0_6px_16px_-6px_rgba(8,8,8,0.35)]">
+          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-[#7C6FE0] via-[#6558D3] to-[#5649C0] text-white shadow-[0_6px_16px_-6px_rgba(8,8,8,0.35)]">
             <span className="absolute inset-[3px] rounded-[7px] border border-white/25" />
             <Sparkles className="relative h-4 w-4" strokeWidth={2.2} />
           </div>

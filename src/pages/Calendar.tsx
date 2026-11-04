@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowUpRight,
@@ -122,7 +122,7 @@ export function CalendarPage() {
         title: task.title,
         meta: project?.name ?? client?.businessName ?? 'Personal task',
         date: task.dueDate,
-        to: `/tasks?task=${task.id}`,
+        to: `/work//tasks?task=${task.id}`,
         status: task.status,
         done: task.status === 'completed',
       });
@@ -136,10 +136,10 @@ export function CalendarPage() {
         id: `invoice-${invoice.id}`,
         type: 'invoice',
         label: `${client?.businessName ?? 'Invoice'} due`,
-        title: `${client?.businessName ?? 'Invoice'} · ${invoice.id}`,
-        meta: `${invoice.id} · ${formatMoney(invoiceBalance(invoice, state.payments))} outstanding`,
+        title: `${client?.businessName ?? 'Invoice'} Â· ${invoice.id}`,
+        meta: `${invoice.id} Â· ${formatMoney(invoiceBalance(invoice, state.payments))} outstanding`,
         date: invoice.dueDate,
-        to: `/invoices?invoice=${invoice.id}`,
+        to: `/work//invoices?invoice=${invoice.id}`,
         amount: invoiceBalance(invoice, state.payments),
       });
     });
@@ -150,11 +150,11 @@ export function CalendarPage() {
       list.push({
         id: `payment-${payment.id}`,
         type: 'payment',
-        label: refund ? `Refund · ${formatMoney(payment.amount)}` : `Payment · ${formatMoney(payment.amount)}`,
+        label: refund ? `Refund Â· ${formatMoney(payment.amount)}` : `Payment Â· ${formatMoney(payment.amount)}`,
         title: refund ? `Refund to ${client?.businessName ?? 'client'}` : `Payment from ${client?.businessName ?? 'client'}`,
-        meta: `${payment.id} · ${payment.mode}${payment.reference ? ` · ${payment.reference}` : ''}`,
+        meta: `${payment.id} Â· ${payment.mode}${payment.reference ? ` Â· ${payment.reference}` : ''}`,
         date: payment.date,
-        to: `/invoices?invoice=${payment.invoiceId}`,
+        to: `/work//invoices?invoice=${payment.invoiceId}`,
         amount: payment.amount,
         refund,
       });
@@ -167,9 +167,9 @@ export function CalendarPage() {
         type: 'project',
         label: `${project.name} deadline`,
         title: `${project.name} deadline`,
-        meta: `${client?.businessName ?? 'Project'} · ${project.code}`,
+        meta: `${client?.businessName ?? 'Project'} Â· ${project.code}`,
         date: project.endDate,
-        to: `/projects/${project.id}`,
+        to: `/work//projects/${project.id}`,
         status: undefined,
       });
     });
@@ -259,7 +259,7 @@ export function CalendarPage() {
               <CalendarCheck className="h-3.5 w-3.5" />
               Today
             </Button>
-            <Button variant="primary" size="md" onClick={() => navigate('/tasks?create=1')}>
+            <Button variant="primary" size="md" onClick={() => navigate('/work/tasks?create=1')}>
               <Plus className="h-3.5 w-3.5" />
               Add Task
             </Button>
@@ -429,7 +429,7 @@ export function CalendarPage() {
               <div className="px-3 py-8 text-center">
                 <CalendarDays className="mx-auto h-5 w-5 text-muted" />
                 <p className="mt-2 text-[11px] font-medium text-ink">Nothing scheduled</p>
-                <p className="mt-0.5 text-[10px] text-muted">This day is clear — a good time to get ahead.</p>
+                <p className="mt-0.5 text-[10px] text-muted">This day is clear â€” a good time to get ahead.</p>
               </div>
             ) : (
               <div className="space-y-1">
@@ -453,7 +453,7 @@ export function CalendarPage() {
                         <span className="mt-0.5 block truncate text-[9.5px] text-muted">{event.meta}</span>
                         {event.type === 'payment' && (
                           <span className={cn('mt-1 inline-flex items-center rounded px-1.5 py-0.5 text-[8.5px] font-medium', event.refund ? 'bg-violet-50 text-violet-700 dark:bg-violet-500/10 dark:text-violet-400' : 'bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400')}>
-                            {event.refund ? '−' : '+'}
+                            {event.refund ? 'âˆ’' : '+'}
                             {formatMoney(event.amount ?? 0)}
                           </span>
                         )}
@@ -503,3 +503,4 @@ export function CalendarPage() {
     </div>
   );
 }
+

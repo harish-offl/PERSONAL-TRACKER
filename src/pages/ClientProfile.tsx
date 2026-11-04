@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -92,7 +92,7 @@ export function ClientProfilePage() {
   if (!client || !data) {
     return (
       <div className="space-y-4">
-        <Link to="/clients" className="inline-flex items-center gap-1.5 text-[11px] font-medium text-soft hover:text-ink">
+        <Link to="/work//clients" className="inline-flex items-center gap-1.5 text-[11px] font-medium text-soft hover:text-ink">
           <ArrowLeft className="h-3.5 w-3.5" /> Back to clients
         </Link>
         <EmptyState
@@ -100,7 +100,7 @@ export function ClientProfilePage() {
           title="Client not found"
           description="This client record may have been removed, or the link is out of date."
           action={
-            <Button variant="primary" size="sm" onClick={() => navigate('/clients')}>
+            <Button variant="primary" size="sm" onClick={() => navigate('/work/clients')}>
               View all clients
             </Button>
           }
@@ -133,7 +133,7 @@ export function ClientProfilePage() {
     <div className="space-y-4">
       <PageHeader
         title={client.businessName}
-        description={`${client.name} · ${client.location || 'No location added'} · Client since ${formatDate(client.createdAt)}`}
+        description={`${client.name} Â· ${client.location || 'No location added'} Â· Client since ${formatDate(client.createdAt)}`}
         badge={<StatusBadge status={client.status} />}
         actions={
           <>
@@ -141,7 +141,7 @@ export function ClientProfilePage() {
               <Pencil className="h-3.5 w-3.5" />
               Edit
             </Button>
-            <Button variant="primary" size="md" onClick={() => navigate(`/invoices?create=1&client=${client.id}`)}>
+            <Button variant="primary" size="md" onClick={() => navigate(`/work//invoices?create=1&client=${client.id}`)}>
               <Plus className="h-3.5 w-3.5" />
               New Invoice
             </Button>
@@ -149,8 +149,8 @@ export function ClientProfilePage() {
               label="Client options"
               size="icon"
               items={[
-                { label: 'Add task', onClick: () => navigate('/tasks?create=1') },
-                { label: 'Upload document', onClick: () => navigate('/documents?upload=1') },
+                { label: 'Add task', onClick: () => navigate('/work/tasks?create=1') },
+                { label: 'Upload document', onClick: () => navigate('/work/documents?upload=1') },
                 { label: 'Delete client', icon: Trash2, onClick: () => setDeleteOpen(true), danger: true, separator: true },
               ]}
             />
@@ -220,12 +220,12 @@ export function ClientProfilePage() {
           <Tabs value={tab} onChange={setTab} options={tabs} className="w-full" />
           {tab === 'overview' && (
             <div className="grid gap-4 md:grid-cols-2">
-              <SectionCard title="Active projects" description="Work currently in motion" icon={FolderKanban} action={<Link to={`/clients/${client.id}`} onClick={(event) => { event.preventDefault(); setTab('projects'); }} className="text-[10.5px] font-medium text-accent-strong hover:underline">View all</Link>} bodyClassName="p-1.5">
+              <SectionCard title="Active projects" description="Work currently in motion" icon={FolderKanban} action={<Link to={`/work//clients/${client.id}`} onClick={(event) => { event.preventDefault(); setTab('projects'); }} className="text-[10.5px] font-medium text-accent-strong hover:underline">View all</Link>} bodyClassName="p-1.5">
                 {data.projects.filter((project) => project.status !== 'Completed').slice(0, 4).map((project) => (
-                  <button key={project.id} type="button" onClick={() => navigate(`/projects/${project.id}`)} className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-secondary/60">
+                  <button key={project.id} type="button" onClick={() => navigate(`/work//projects/${project.id}`)} className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-secondary/60">
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[11px] font-medium text-ink">{project.name}</p>
-                      <p className="mt-0.5 text-[9px] text-muted">{project.code} · {formatMoney(project.value)}</p>
+                      <p className="mt-0.5 text-[9px] text-muted">{project.code} Â· {formatMoney(project.value)}</p>
                     </div>
                     <div className="w-16">
                       <Progress value={project.progress} />
@@ -240,7 +240,7 @@ export function ClientProfilePage() {
                 {data.invoices.slice(0, 4).map((invoice) => {
                   const remaining = invoiceBalance(invoice, state.payments);
                   return (
-                    <button key={invoice.id} type="button" onClick={() => navigate(`/invoices?invoice=${invoice.id}`)} className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-secondary/60">
+                    <button key={invoice.id} type="button" onClick={() => navigate(`/work//invoices?invoice=${invoice.id}`)} className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-secondary/60">
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[11px] font-medium text-ink">{invoice.id}</p>
                         <p className="mt-0.5 text-[9px] text-muted">Due {formatDateShort(invoice.dueDate)}</p>
@@ -258,10 +258,10 @@ export function ClientProfilePage() {
 
               <SectionCard title="Open tasks" description="Work to keep moving" icon={ListChecks} action={<button type="button" onClick={() => setTab('tasks')} className="text-[10.5px] font-medium text-accent-strong hover:underline">View all</button>} bodyClassName="p-1.5">
                 {data.tasks.filter((task) => task.status !== 'completed').slice(0, 4).map((task) => (
-                  <button key={task.id} type="button" onClick={() => navigate(`/tasks?task=${task.id}`)} className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-secondary/60">
+                  <button key={task.id} type="button" onClick={() => navigate(`/work//tasks?task=${task.id}`)} className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-secondary/60">
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[11px] font-medium text-ink">{task.title}</span>
-                      <span className="mt-0.5 block text-[9px] text-muted">{task.id} · Due {formatDateShort(task.dueDate)}</span>
+                      <span className="mt-0.5 block text-[9px] text-muted">{task.id} Â· Due {formatDateShort(task.dueDate)}</span>
                     </span>
                     <PriorityBadge priority={task.priority} />
                   </button>
@@ -282,11 +282,11 @@ export function ClientProfilePage() {
             data.projects.length ? (
               <div className="grid gap-3 md:grid-cols-2">
                 {data.projects.map((project) => (
-                  <ProjectCard key={project.id} project={project} onOpen={() => navigate(`/projects/${project.id}`)} />
+                  <ProjectCard key={project.id} project={project} onOpen={() => navigate(`/work//projects/${project.id}`)} />
                 ))}
               </div>
             ) : (
-              <EmptyState icon={FolderKanban} title="No projects yet" description="Create a project to start tracking work for this client." action={<Button variant="primary" size="sm" onClick={() => navigate('/projects?create=1')}><Plus className="h-3.5 w-3.5" />Create project</Button>} />
+              <EmptyState icon={FolderKanban} title="No projects yet" description="Create a project to start tracking work for this client." action={<Button variant="primary" size="sm" onClick={() => navigate('/work/projects?create=1')}><Plus className="h-3.5 w-3.5" />Create project</Button>} />
             )
           )}
 
@@ -308,7 +308,7 @@ export function ClientProfilePage() {
                   </thead>
                   <tbody>
                     {data.invoices.map((invoice) => (
-                      <TableRow key={invoice.id} onClick={() => navigate(`/invoices?invoice=${invoice.id}`)}>
+                      <TableRow key={invoice.id} onClick={() => navigate(`/work//invoices?invoice=${invoice.id}`)}>
                         <Td><span className="font-medium text-ink">{invoice.id}</span></Td>
                         <Td>{formatDate(invoice.issueDate)}</Td>
                         <Td>{formatDate(invoice.dueDate)}</Td>
@@ -316,13 +316,13 @@ export function ClientProfilePage() {
                         <Td align="right">{formatMoney(invoicePaid(invoice.id, state.payments))}</Td>
                         <Td align="right"><span className={cn(invoiceBalance(invoice, state.payments) > 0 ? 'text-accent-strong' : 'text-success')}>{formatMoney(invoiceBalance(invoice, state.payments))}</span></Td>
                         <Td><StatusBadge status={invoiceStatus(invoice, state.payments)} /></Td>
-                        <Td align="right"><ActionMenu label="Invoice actions" items={[{ label: 'View invoice', onClick: () => navigate(`/invoices?invoice=${invoice.id}`) }]} /></Td>
+                        <Td align="right"><ActionMenu label="Invoice actions" items={[{ label: 'View invoice', onClick: () => navigate(`/work//invoices?invoice=${invoice.id}`) }]} /></Td>
                       </TableRow>
                     ))}
                   </tbody>
                 </DataTable>
               ) : (
-                <EmptyState icon={FileText} title="No invoices yet" description="Create an invoice for this client to start tracking payments." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate(`/invoices?create=1&client=${client.id}`)}>Create invoice</Button>} />
+                <EmptyState icon={FileText} title="No invoices yet" description="Create an invoice for this client to start tracking payments." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate(`/work//invoices?create=1&client=${client.id}`)}>Create invoice</Button>} />
               )}
             </div>
           )}
@@ -350,7 +350,7 @@ export function ClientProfilePage() {
                         <Td>{payment.mode}</Td>
                         <Td><span className="font-mono text-[10.5px]">{payment.reference}</span></Td>
                         <Td><Badge tone={payment.type === 'Refund' ? 'purple' : 'green'}>{payment.type}</Badge></Td>
-                        <Td align="right"><span className={cn('font-medium', payment.type === 'Refund' ? 'text-danger' : 'text-ink')}>{payment.type === 'Refund' ? '−' : ''}{formatMoney(payment.amount)}</span></Td>
+                        <Td align="right"><span className={cn('font-medium', payment.type === 'Refund' ? 'text-danger' : 'text-ink')}>{payment.type === 'Refund' ? 'âˆ’' : ''}{formatMoney(payment.amount)}</span></Td>
                         <Td><StatusBadge status={payment.type === 'Refund' ? 'Refunded' : 'Paid'} /></Td>
                       </TableRow>
                     ))}
@@ -366,17 +366,17 @@ export function ClientProfilePage() {
             data.documents.length ? (
               <div className="grid gap-2 sm:grid-cols-2">
                 {data.documents.map((doc) => (
-                  <button key={doc.id} type="button" onClick={() => navigate(`/documents?doc=${doc.id}`)} className="flex items-center gap-3 rounded-xl border border-line bg-card p-3 text-left shadow-card transition hover:border-accent/30">
+                  <button key={doc.id} type="button" onClick={() => navigate(`/work//documents?doc=${doc.id}`)} className="flex items-center gap-3 rounded-xl border border-line bg-card p-3 text-left shadow-card transition hover:border-accent/30">
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-secondary text-soft"><Files className="h-4 w-4" /></span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[11.5px] font-medium text-ink">{doc.name}</span>
-                      <span className="mt-0.5 block text-[9.5px] text-muted">{doc.category} · {doc.ext.toUpperCase()} · {formatDateShort(doc.uploadDate)}</span>
+                      <span className="mt-0.5 block text-[9.5px] text-muted">{doc.category} Â· {doc.ext.toUpperCase()} Â· {formatDateShort(doc.uploadDate)}</span>
                     </span>
                   </button>
                 ))}
               </div>
             ) : (
-              <EmptyState icon={Files} title="No documents yet" description="Upload contracts, proposals and brand assets for this client." action={<Button variant="secondary" size="sm" onClick={() => navigate('/documents?upload=1')}>Upload files</Button>} />
+              <EmptyState icon={Files} title="No documents yet" description="Upload contracts, proposals and brand assets for this client." action={<Button variant="secondary" size="sm" onClick={() => navigate('/work/documents?upload=1')}>Upload files</Button>} />
             )
           )}
 
@@ -385,11 +385,11 @@ export function ClientProfilePage() {
               {data.tasks.length ? (
                 <div className="divide-y divide-line-soft">
                   {data.tasks.map((task) => (
-                    <button key={task.id} type="button" onClick={() => navigate(`/tasks?task=${task.id}`)} className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-secondary/50">
+                    <button key={task.id} type="button" onClick={() => navigate(`/work//tasks?task=${task.id}`)} className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-secondary/50">
                       <span className={cn('h-2 w-2 shrink-0 rounded-full', task.status === 'completed' ? 'bg-success' : task.status === 'inprogress' ? 'bg-info' : task.status === 'pending' ? 'bg-warning' : 'bg-muted')} />
                       <div className="min-w-0 flex-1">
                         <p className={cn('truncate text-[11.5px] font-medium text-ink', task.status === 'completed' && 'line-through text-muted')}>{task.title}</p>
-                        <p className="mt-0.5 text-[9.5px] text-muted">{task.id} · Due {formatDate(task.dueDate)}</p>
+                        <p className="mt-0.5 text-[9.5px] text-muted">{task.id} Â· Due {formatDate(task.dueDate)}</p>
                       </div>
                       <PriorityBadge priority={task.priority} />
                       <StatusBadge status={task.status === 'inprogress' ? 'In Progress' : task.status === 'todo' ? 'To Do' : task.status === 'pending' ? 'Pending' : 'Completed'} />
@@ -397,7 +397,7 @@ export function ClientProfilePage() {
                   ))}
                 </div>
               ) : (
-                <EmptyState icon={ListChecks} title="No tasks yet" description="Create a task linked to this client." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate('/tasks?create=1')}>Create task</Button>} />
+                <EmptyState icon={ListChecks} title="No tasks yet" description="Create a task linked to this client." className="m-4 border-0" action={<Button variant="secondary" size="sm" onClick={() => navigate('/work/tasks?create=1')}>Create task</Button>} />
               )}
             </div>
           )}
@@ -414,7 +414,7 @@ export function ClientProfilePage() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[11.5px] font-medium text-ink">{entry.title}</p>
-                        <p className="mt-0.5 text-[9.5px] text-muted">{entry.startTime} – {entry.endTime} · {entry.category} · {formatDuration(workDuration(entry.startTime, entry.endTime))}</p>
+                        <p className="mt-0.5 text-[9.5px] text-muted">{entry.startTime} â€“ {entry.endTime} Â· {entry.category} Â· {formatDuration(workDuration(entry.startTime, entry.endTime))}</p>
                       </div>
                       <StatusBadge status={entry.status} />
                     </div>
@@ -442,10 +442,10 @@ export function ClientProfilePage() {
         onConfirm={() => {
           deleteClient(client.id);
           toast({ title: 'Client removed', description: client.businessName });
-          navigate('/clients');
+          navigate('/work/clients');
         }}
         title="Delete this client?"
-        description={`“${client.businessName}” and all related records will be permanently removed. This cannot be undone.`}
+        description={`â€œ${client.businessName}â€ and all related records will be permanently removed. This cannot be undone.`}
       />
     </div>
   );
@@ -472,3 +472,4 @@ function InfoRow({
     </div>
   );
 }
+

@@ -143,7 +143,7 @@ export function PaymentsPage() {
 
   const openInvoice = (invoice: Invoice | undefined) => {
     if (!invoice) return;
-    navigate(`/invoices?invoice=${invoice.id}`);
+    navigate(`/work//invoices?invoice=${invoice.id}`);
   };
 
   const exportPayments = () => {
@@ -363,7 +363,7 @@ export function PaymentsPage() {
           onClose={() => setViewingId(null)}
           onViewInvoice={() => {
             setViewingId(null);
-            navigate(`/invoices?invoice=${viewing.invoiceId}`);
+            navigate(`/work//invoices?invoice=${viewing.invoiceId}`);
           }}
           onDelete={() => {
             setViewingId(null);

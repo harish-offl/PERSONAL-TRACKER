@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BookOpen,
@@ -51,7 +51,7 @@ const GUIDES: Guide[] = [
     title: 'Getting started',
     description: 'Set up your profile, workspace, and first client in a few minutes.',
     icon: Sparkles,
-    to: '/settings',
+    to: '/work/settings',
     tone: 'bg-accent-soft text-accent-strong border-accent/20',
     keywords: 'start setup begin onboarding profile workspace',
   },
@@ -60,7 +60,7 @@ const GUIDES: Guide[] = [
     title: 'Creating invoices',
     description: 'Line items, tax, discounts, PDF downloads, and payment tracking.',
     icon: FileText,
-    to: '/invoices',
+    to: '/work/invoices',
     tone: 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/25',
     keywords: 'invoice billing tax pdf payment client bill',
   },
@@ -69,7 +69,7 @@ const GUIDES: Guide[] = [
     title: 'Project workflow',
     description: 'Plan projects, move tasks across the board, and log your hours.',
     icon: FolderKanban,
-    to: '/projects',
+    to: '/work/projects',
     tone: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/25',
     keywords: 'project tasks kanban board workflow timeline',
   },
@@ -78,7 +78,7 @@ const GUIDES: Guide[] = [
     title: 'Tracking payments',
     description: 'Record partial payments, issue refunds, and keep balances accurate.',
     icon: Wallet,
-    to: '/payments',
+    to: '/work/payments',
     tone: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/25',
     keywords: 'payments refunds balance received outstanding upi',
   },
@@ -96,7 +96,7 @@ const FAQS: Faq[] = [
     id: 'faq-data',
     question: 'Where is my data stored?',
     answer:
-      'Everything lives in your browser using local storage. Your clients, projects, invoices, payments, and settings never leave this device. Clearing your browser site data will remove the workspace, so export a JSON backup from Settings → Security if you want a copy.',
+      'Everything lives in your browser using local storage. Your clients, projects, invoices, payments, and settings never leave this device. Clearing your browser site data will remove the workspace, so export a JSON backup from Settings â†’ Security if you want a copy.',
     topic: 'Data',
   },
   {
@@ -117,14 +117,14 @@ const FAQS: Faq[] = [
     id: 'faq-documents',
     question: 'Are uploaded files stored permanently?',
     answer:
-      'This demo stores document metadata — name, category, size, and links — in your local workspace. The upload flow simulates progress and storage usage so you can see how the library behaves without sending files anywhere.',
+      'This demo stores document metadata â€” name, category, size, and links â€” in your local workspace. The upload flow simulates progress and storage usage so you can see how the library behaves without sending files anywhere.',
     topic: 'Documents',
   },
   {
     id: 'faq-theme',
     question: 'How do I switch between light and dark mode?',
     answer:
-      'Use the sun or moon button in the header, or open Settings → Preferences → Appearance. Your preference is saved with the rest of your workspace settings.',
+      'Use the sun or moon button in the header, or open Settings â†’ Preferences â†’ Appearance. Your preference is saved with the rest of your workspace settings.',
     topic: 'Workspace',
   },
   {
@@ -138,7 +138,7 @@ const FAQS: Faq[] = [
     id: 'faq-invoice-number',
     question: 'Can I change the invoice number format?',
     answer:
-      'Yes. In Settings → Invoicing you can set the invoice prefix and see the next generated number. New invoices use the prefix you choose, followed by the year and a padded sequence.',
+      'Yes. In Settings â†’ Invoicing you can set the invoice prefix and see the next generated number. New invoices use the prefix you choose, followed by the year and a padded sequence.',
     topic: 'Invoicing',
   },
 ];
@@ -152,11 +152,11 @@ interface OnboardingItem {
 }
 
 const DEFAULT_STEPS: OnboardingItem[] = [
-  { id: 'profile', label: 'Complete your profile', description: 'Add your name, role, and workspace details.', to: '/settings', done: false },
-  { id: 'client', label: 'Add your first client', description: 'Create a client with contact and business details.', to: '/clients?create=1', done: false },
-  { id: 'project', label: 'Create a project', description: 'Give the work a scope, timeline, and value.', to: '/projects?create=1', done: false },
-  { id: 'invoice', label: 'Send an invoice', description: 'Build line items and share a polished PDF.', to: '/invoices?create=1', done: false },
-  { id: 'work', label: 'Log a work entry', description: 'Track time and what you completed today.', to: '/daily-work?create=1', done: false },
+  { id: 'profile', label: 'Complete your profile', description: 'Add your name, role, and workspace details.', to: '/work/settings', done: false },
+  { id: 'client', label: 'Add your first client', description: 'Create a client with contact and business details.', to: '/work/clients?create=1', done: false },
+  { id: 'project', label: 'Create a project', description: 'Give the work a scope, timeline, and value.', to: '/work/projects?create=1', done: false },
+  { id: 'invoice', label: 'Send an invoice', description: 'Build line items and share a polished PDF.', to: '/work/invoices?create=1', done: false },
+  { id: 'work', label: 'Log a work entry', description: 'Track time and what you completed today.', to: '/work/daily-work?create=1', done: false },
 ];
 
 function loadSteps(): OnboardingItem[] {
@@ -264,7 +264,7 @@ export function HelpPage() {
       />
 
       <div className="overflow-hidden rounded-xl border border-line bg-card shadow-card">
-        <div className="relative bg-gradient-to-br from-[#FDF2F5] via-card to-card px-5 py-7 dark:from-accent/10 dark:via-card dark:to-card sm:px-7">
+        <div className="relative bg-gradient-to-br from-[#F2F0FC] via-card to-card px-5 py-7 dark:from-accent/10 dark:via-card dark:to-card sm:px-7">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-2.5 py-1 text-[10px] font-medium text-accent-strong">
               <Sparkles className="h-3 w-3" />
@@ -281,14 +281,14 @@ export function HelpPage() {
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Search help articles and FAQs…"
+                placeholder="Search help articles and FAQsâ€¦"
                 className="h-10 w-full rounded-lg border border-line bg-card pl-9 pr-3 text-[12px] text-ink shadow-card outline-none transition placeholder:text-muted focus:border-accent/40 focus:ring-2 focus:ring-accent/20"
               />
             </div>
             {query && (
               <p className="mt-2 text-[10px] text-muted">
                 {filteredGuides.length + filteredFaqs.length} result
-                {filteredGuides.length + filteredFaqs.length === 1 ? '' : 's'} for “{search.trim()}”
+                {filteredGuides.length + filteredFaqs.length === 1 ? '' : 's'} for â€œ{search.trim()}â€
               </p>
             )}
           </div>
@@ -306,7 +306,7 @@ export function HelpPage() {
               <div className="rounded-xl border border-dashed border-line bg-secondary/40 px-5 py-8 text-center">
                 <Search className="mx-auto h-5 w-5 text-muted" />
                 <p className="mt-2 text-[11.5px] font-medium text-ink">No guides matched your search</p>
-                <p className="mt-0.5 text-[10.5px] text-muted">Try a broader term like “invoice” or “project”.</p>
+                <p className="mt-0.5 text-[10.5px] text-muted">Try a broader term like â€œinvoiceâ€ or â€œprojectâ€.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -336,7 +336,7 @@ export function HelpPage() {
 
           <SectionCard
             title="Frequently asked questions"
-            description={query ? `Filtered by “${search.trim()}”` : 'Quick answers to common questions'}
+            description={query ? `Filtered by â€œ${search.trim()}â€` : 'Quick answers to common questions'}
             icon={HelpCircle}
             bodyClassName="p-0"
           >
@@ -420,7 +420,7 @@ export function HelpPage() {
             {completion === 100 && (
               <div className="mt-2 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-2.5 py-2 text-[9.5px] text-green-700 dark:border-green-500/25 dark:bg-green-500/10 dark:text-green-400">
                 <Check className="h-3.5 w-3.5" />
-                You are all set — nice work!
+                You are all set â€” nice work!
               </div>
             )}
           </SectionCard>
@@ -455,7 +455,7 @@ export function HelpPage() {
                 </div>
               </div>
               <p className="text-[10px] leading-relaxed text-muted">
-                Include as much detail as you can — the page you were on, what you expected, and what happened instead.
+                Include as much detail as you can â€” the page you were on, what you expected, and what happened instead.
               </p>
               <Button
                 variant="secondary"
@@ -499,13 +499,13 @@ export function HelpPage() {
                 <Textarea
                   value={contact.message}
                   onChange={(event) => setContact({ ...contact, message: event.target.value })}
-                  placeholder="Share the details of your question…"
+                  placeholder="Share the details of your questionâ€¦"
                   className="min-h-[110px]"
                 />
               </Field>
             </div>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-line-soft pt-4">
-              <p className="text-[9.5px] text-muted">This demo simulates a support request — nothing is transmitted.</p>
+              <p className="text-[9.5px] text-muted">This demo simulates a support request â€” nothing is transmitted.</p>
               <Button variant="primary" size="sm" loading={sending} onClick={submitContact}>
                 <Send className="h-3.5 w-3.5" />
                 Send message
@@ -516,12 +516,12 @@ export function HelpPage() {
           <SectionCard title="Support hours" description="When you can reach us" icon={LifeBuoy}>
             <dl className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <dt className="text-[10.5px] text-muted">Monday – Friday</dt>
-                <dd className="text-[10.5px] font-medium text-ink">9:00 – 18:00 IST</dd>
+                <dt className="text-[10.5px] text-muted">Monday â€“ Friday</dt>
+                <dd className="text-[10.5px] font-medium text-ink">9:00 â€“ 18:00 IST</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt className="text-[10.5px] text-muted">Saturday</dt>
-                <dd className="text-[10.5px] font-medium text-ink">10:00 – 14:00 IST</dd>
+                <dd className="text-[10.5px] font-medium text-ink">10:00 â€“ 14:00 IST</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt className="text-[10.5px] text-muted">Sunday</dt>
@@ -530,7 +530,7 @@ export function HelpPage() {
             </dl>
             <div className="mt-3 flex items-start gap-2 rounded-lg border border-line bg-secondary/30 p-2.5 text-[9.5px] leading-relaxed text-muted">
               <HelpCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-              Search the FAQs and guides first — most setup questions are answered there.
+              Search the FAQs and guides first â€” most setup questions are answered there.
             </div>
           </SectionCard>
         </div>
@@ -538,3 +538,4 @@ export function HelpPage() {
     </div>
   );
 }
+

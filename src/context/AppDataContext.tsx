@@ -12,6 +12,7 @@ import type {
   AppDocument,
   AppState,
   Client,
+  Expense,
   Invoice,
   Payment,
   Project,
@@ -20,6 +21,7 @@ import type {
   WorkEntry,
 } from '../types';
 import { createSeedData } from '../data/seed';
+import { applyTheme, readStoredTheme } from '../lib/theme';
 import {
   TASK_STATUS_LABEL,
   formatDuration,
@@ -44,6 +46,7 @@ function mergeSettings(base: Settings, incoming?: Partial<Settings>): Settings {
 
 function loadState(): AppState {
   const seed = createSeedData();
+  seed.settings.theme = readStoredTheme(seed.settings.theme);
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return seed;
@@ -57,9 +60,13 @@ function loadState(): AppState {
       workEntries: parsed.workEntries ?? seed.workEntries,
       invoices: parsed.invoices ?? seed.invoices,
       payments: parsed.payments ?? seed.payments,
+      expenses: parsed.expenses ?? seed.expenses,
       documents: parsed.documents ?? seed.documents,
       activities: parsed.activities ?? seed.activities,
-      settings: mergeSettings(seed.settings, parsed.settings),
+      settings: {
+        ...mergeSettings(seed.settings, parsed.settings),
+        theme: readStoredTheme(parsed.settings?.theme ?? seed.settings.theme),
+      },
     };
   } catch {
     return seed;
@@ -95,6 +102,9 @@ interface AppDataContextValue {
   duplicateInvoice: (id: string) => void;
   addPayment: (payment: Payment) => void;
   deletePayment: (id: string) => void;
+  addExpense: (expense: Expense) => void;
+  updateExpense: (expense: Expense) => void;
+  deleteExpense: (id: string) => void;
   addDocuments: (documents: AppDocument[]) => void;
   renameDocument: (id: string, name: string) => void;
   deleteDocument: (id: string) => void;
@@ -131,9 +141,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
   }, [state]);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', state.settings.theme === 'dark');
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', state.settings.theme === 'dark' ? '#080808' : '#FFFFFF');
+    applyTheme(state.settings.theme);
   }, [state.settings.theme]);
 
   const pushActivity = useCallback(
@@ -189,6 +197,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           payments: prev.payments.filter(
             (item) => item.clientId !== id && !invoiceIds.has(item.invoiceId),
           ),
+          expenses: prev.expenses.filter((item) => item.clientId !== id),
           documents: prev.documents.filter((item) => item.clientId !== id),
           activities: pushActivity(
             prev,
@@ -234,6 +243,9 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           tasks: prev.tasks.filter((item) => item.projectId !== id),
           workEntries: prev.workEntries.filter((item) => item.projectId !== id),
           invoices: prev.invoices.map((item) =>
+            item.projectId === id ? { ...item, projectId: undefined } : item,
+          ),
+          expenses: prev.expenses.map((item) =>
             item.projectId === id ? { ...item, projectId: undefined } : item,
           ),
           documents: prev.documents.map((item) =>
@@ -457,6 +469,47 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     [pushActivity],
   );
 
+  const addExpense = useCallback(
+    (expense: Expense) => {
+      setState((prev) => ({
+        ...prev,
+        expenses: [expense, ...prev.expenses],
+        activities: pushActivity(
+          prev,
+          'expense',
+          'Expense recorded',
+          `${expense.name} A� ${formatMoney(expense.amount)}`,
+        ),
+      }));
+    },
+    [pushActivity],
+  );
+
+  const updateExpense = useCallback(
+    (expense: Expense) => {
+      setState((prev) => ({
+        ...prev,
+        expenses: prev.expenses.map((item) => (item.id === expense.id ? expense : item)),
+        activities: pushActivity(prev, 'expense', 'Expense updated', expense.name),
+      }));
+    },
+    [pushActivity],
+  );
+
+  const deleteExpense = useCallback(
+    (id: string) => {
+      setState((prev) => {
+        const expense = prev.expenses.find((item) => item.id === id);
+        return {
+          ...prev,
+          expenses: prev.expenses.filter((item) => item.id !== id),
+          activities: pushActivity(prev, 'expense', 'Expense deleted', expense ? expense.name : 'Expense deleted'),
+        };
+      });
+    },
+    [pushActivity],
+  );
+
   const addDocuments = useCallback(
     (documents: AppDocument[]) => {
       if (!documents.length) return;
@@ -564,6 +617,9 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       duplicateInvoice,
       addPayment,
       deletePayment,
+      addExpense,
+      updateExpense,
+      deleteExpense,
       addDocuments,
       renameDocument,
       deleteDocument,
@@ -593,6 +649,9 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       duplicateInvoice,
       addPayment,
       deletePayment,
+      addExpense,
+      updateExpense,
+      deleteExpense,
       addDocuments,
       renameDocument,
       deleteDocument,

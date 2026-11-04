@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Activity as ActivityIcon,
@@ -135,7 +135,7 @@ export function OverviewPage() {
         date: task.dueDate,
         title: task.title,
         type: 'Task',
-        to: `/tasks?task=${task.id}`,
+        to: `/work//tasks?task=${task.id}`,
         tone: task.priority,
       }));
     const invoiceItems = state.invoices
@@ -148,9 +148,9 @@ export function OverviewPage() {
       .map((invoice) => ({
         id: `inv-${invoice.id}`,
         date: invoice.dueDate,
-        title: `${invoice.id} · ${getClient(state, invoice.clientId)?.businessName ?? 'Client'}`,
+        title: `${invoice.id} Â· ${getClient(state, invoice.clientId)?.businessName ?? 'Client'}`,
         type: 'Invoice',
-        to: '/invoices',
+        to: '/work/invoices',
         tone: invoiceStatus(invoice, state.payments),
       }));
     return [...taskItems, ...invoiceItems].sort((a, b) => a.date.localeCompare(b.date)).slice(0, 5);
@@ -230,7 +230,7 @@ export function OverviewPage() {
       {/* Banner */}
       {bannerVisible && (
         <div className="flex items-center gap-3 rounded-xl border border-line bg-secondary/80 px-3 py-2.5 sm:px-4">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#C02050] to-[#9F1239] text-white shadow-[0_6px_14px_-8px_rgba(8,8,8,0.35)]">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#7C6FE0] to-[#6558D3] text-white shadow-[0_6px_14px_-8px_rgba(8,8,8,0.35)]">
             <Sparkles className="h-4 w-4" />
           </span>
           <p className="min-w-0 flex-1 text-[11.5px] text-soft">
@@ -241,7 +241,7 @@ export function OverviewPage() {
           </p>
           <button
             type="button"
-            onClick={() => navigate('/tasks')}
+            onClick={() => navigate('/work/tasks')}
             className="hidden shrink-0 rounded-lg border border-line bg-card px-2.5 py-1.5 text-[10.5px] font-medium text-ink shadow-card transition hover:bg-card/80 sm:inline-flex"
           >
             Review now
@@ -263,29 +263,29 @@ export function OverviewPage() {
           icon={Users}
           label="Total Clients"
           value={String(state.clients.length)}
-          to="/clients"
-          hint={`${state.clients.filter((client) => client.status === 'Active').length} active · ${recentThisMonth} new this month`}
+          to="/work/clients"
+          hint={`${state.clients.filter((client) => client.status === 'Active').length} active Â· ${recentThisMonth} new this month`}
           trend={recentThisMonth > 0 ? { value: `+${recentThisMonth}`, positive: true } : undefined}
         />
         <StatCard
           icon={FolderKanban}
           label="Active Projects"
           value={String(activeProjects.length)}
-          to="/projects"
+          to="/work/projects"
           hint={`${formatMoney(activeProjects.reduce((total, project) => total + project.value, 0))} in flight`}
         />
         <StatCard
           icon={ListChecks}
           label="Pending Tasks"
           value={String(pendingTasks.length)}
-          to="/tasks"
+          to="/work/tasks"
           hint={`${dueToday} due today or overdue`}
         />
         <StatCard
           icon={Wallet}
           label="Total Received"
           value={formatMoney(received)}
-          to="/payments"
+          to="/work/payments"
           tone="accent"
           trend={incomeTrend}
           hint={`${formatMoney(outstanding)} still outstanding`}
@@ -300,7 +300,7 @@ export function OverviewPage() {
             {view === 'overview' ? 'A calm view of your day' : 'Switch views without leaving the dashboard'}
           </span>
           <Link
-            to="/reports"
+            to="/work/reports"
             className="inline-flex items-center gap-1 rounded-lg border border-line bg-card px-2.5 py-1.5 text-[10.5px] font-medium text-soft shadow-card transition hover:text-ink"
           >
             Reports
@@ -316,7 +316,7 @@ export function OverviewPage() {
               title="Today's Tasks"
               description="Due today and in the next 48 hours"
               icon={ListChecks}
-              action={<ViewAllLink to="/tasks" />}
+              action={<ViewAllLink to="/work/tasks" />}
               bodyClassName="space-y-0.5 p-2.5"
             >
               {focusTasks.length === 0 ? (
@@ -325,7 +325,7 @@ export function OverviewPage() {
                   title="Nothing urgent today"
                   description="Your next tasks are comfortably scheduled. Take a moment to plan ahead."
                   action={
-                    <Button variant="secondary" size="sm" onClick={() => navigate('/tasks?create=1')}>
+                    <Button variant="secondary" size="sm" onClick={() => navigate('/work/tasks?create=1')}>
                       Add a task
                     </Button>
                   }
@@ -337,7 +337,7 @@ export function OverviewPage() {
                     key={task.id}
                     task={task}
                     onToggle={() => completeTask(task)}
-                    onOpen={() => navigate(`/tasks?task=${task.id}`)}
+                    onOpen={() => navigate(`/work/tasks?task=${task.id}`)}
                   />
                 ))
               )}
@@ -347,7 +347,7 @@ export function OverviewPage() {
               title="Active Projects"
               description="Progress across your current work"
               icon={FolderKanban}
-              action={<ViewAllLink to="/projects" />}
+              action={<ViewAllLink to="/work/projects" />}
               bodyClassName="divide-y divide-line-soft p-0"
             >
               {activeProjects.slice(0, 4).map((project) => {
@@ -356,7 +356,7 @@ export function OverviewPage() {
                   <button
                     key={project.id}
                     type="button"
-                    onClick={() => navigate(`/projects/${project.id}`)}
+                    onClick={() => navigate(`/work/projects/${project.id}`)}
                     className="group flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-secondary/50"
                   >
                     <div className="min-w-0 flex-1">
@@ -367,7 +367,7 @@ export function OverviewPage() {
                         <StatusBadge status={project.status} />
                       </div>
                       <p className="mt-0.5 truncate text-[10px] text-muted">
-                        {client?.businessName ?? 'Personal'} · {project.code} · ends{' '}
+                        {client?.businessName ?? 'Personal'} Â· {project.code} Â· ends{' '}
                         {formatDateShort(project.endDate)}
                       </p>
                       <div className="mt-2 flex items-center gap-2">
@@ -392,7 +392,7 @@ export function OverviewPage() {
                     title="No active projects"
                     description="Create a project to start tracking progress and value."
                     action={
-                      <Button variant="secondary" size="sm" onClick={() => navigate('/projects?create=1')}>
+                      <Button variant="secondary" size="sm" onClick={() => navigate('/work/projects?create=1')}>
                         Create project
                       </Button>
                     }
@@ -406,7 +406,7 @@ export function OverviewPage() {
               title="Recent Daily Work"
               description="What you have been working on"
               icon={ActivityIcon}
-              action={<ViewAllLink to="/daily-work" />}
+              action={<ViewAllLink to="/work/daily-work" />}
               bodyClassName="p-1.5"
             >
               <div className="divide-y divide-line-soft">
@@ -423,7 +423,7 @@ export function OverviewPage() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[11.5px] font-medium text-ink">{entry.title}</p>
                       <p className="mt-0.5 truncate text-[9.5px] text-muted">
-                        {entry.startTime} – {entry.endTime} · {getClient(state, entry.clientId)?.businessName ?? 'Personal'} ·{' '}
+                        {entry.startTime} â€“ {entry.endTime} Â· {getClient(state, entry.clientId)?.businessName ?? 'Personal'} Â·{' '}
                         {formatDuration(workDuration(entry.startTime, entry.endTime))}
                       </p>
                     </div>
@@ -438,7 +438,7 @@ export function OverviewPage() {
               title="Upcoming Deadlines"
               description="Tasks and invoices that need attention"
               icon={CalendarDays}
-              action={<ViewAllLink to="/calendar" />}
+              action={<ViewAllLink to="/work/calendar" />}
               bodyClassName="p-1.5"
             >
               <div className="divide-y divide-line-soft">
@@ -485,7 +485,7 @@ export function OverviewPage() {
               title="Financial Summary"
               description="Received against total invoiced"
               icon={Wallet}
-              action={<ViewAllLink to="/payments" />}
+              action={<ViewAllLink to="/work/payments" />}
               bodyClassName="p-4"
             >
               <div className="flex items-end justify-between gap-3">
@@ -523,8 +523,8 @@ export function OverviewPage() {
                       dy={4}
                     />
                     <Tooltip
-                      cursor={{ fill: 'rgba(159,18,57,0.12)' }}
-                      formatter={(value: number) => [`₹${value}k`, 'Income']}
+                      cursor={{ fill: 'rgba(101,88,211,0.12)' }}
+                      formatter={(value: number) => [`â‚¹${value}k`, 'Income']}
                       contentStyle={{
                         borderRadius: 10,
                         border: '1px solid #EAEAEA',
@@ -533,7 +533,7 @@ export function OverviewPage() {
                         padding: '6px 10px',
                       }}
                     />
-                    <Bar dataKey="income" fill="#9F1239" radius={[4, 4, 0, 0]} maxBarSize={18} />
+                    <Bar dataKey="income" fill="#6558D3" radius={[4, 4, 0, 0]} maxBarSize={18} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -557,7 +557,7 @@ export function OverviewPage() {
               title="Pending Payments"
               description="Balances waiting to be collected"
               icon={ListChecks}
-              action={<ViewAllLink to="/payments" />}
+              action={<ViewAllLink to="/work/payments" />}
               bodyClassName="p-1.5"
             >
               <div className="divide-y divide-line-soft">
@@ -567,7 +567,7 @@ export function OverviewPage() {
                   return (
                     <Link
                       key={invoice.id}
-                      to="/payments"
+                      to="/work/payments"
                       className="flex items-center gap-2.5 rounded-lg px-2 py-2.5 transition hover:bg-secondary/60"
                     >
                       <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent-strong">
@@ -576,7 +576,7 @@ export function OverviewPage() {
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[11px] font-medium text-ink">{client?.businessName}</p>
                         <p className="mt-0.5 text-[9.5px] text-muted">
-                          {invoice.id} · {Math.round((paid / Math.max(1, invoiceTotal(invoice))) * 100)}% paid
+                          {invoice.id} Â· {Math.round((paid / Math.max(1, invoiceTotal(invoice))) * 100)}% paid
                         </p>
                       </div>
                       <div className="text-right">
@@ -631,7 +631,7 @@ export function OverviewPage() {
           title="Dashboard Kanban"
           description="Drag cards to update task status"
           icon={Columns3}
-          action={<ViewAllLink to="/tasks" label="Open full board" />}
+          action={<ViewAllLink to="/work/tasks" label="Open full board" />}
           bodyClassName="p-3"
         >
           <div className="flex gap-3 overflow-x-auto pb-2">
@@ -644,7 +644,7 @@ export function OverviewPage() {
                   label={column.label}
                   color={column.color}
                   count={tasks.length}
-                  onAdd={() => navigate(`/tasks?create=1&status=${column.key}`)}
+                  onAdd={() => navigate(`/work/tasks?create=1&status=${column.key}`)}
                   isOver={dragOverColumn === column.key}
                   onDragOver={(event) => {
                     event.preventDefault();
@@ -668,7 +668,7 @@ export function OverviewPage() {
                         setDraggingId(null);
                         setDragOverColumn(null);
                       }}
-                      onOpen={() => navigate(`/tasks?task=${task.id}`)}
+                      onOpen={() => navigate(`/work/tasks?task=${task.id}`)}
                       onToggleComplete={() => completeTask(task)}
                     />
                   ))}
@@ -688,7 +688,7 @@ export function OverviewPage() {
           title="Recent Activity"
           description="Everything that has happened in your workspace"
           icon={ActivityIcon}
-          action={<ViewAllLink to="/reports" label="Explore reports" />}
+          action={<ViewAllLink to="/work/reports" label="Explore reports" />}
           bodyClassName="p-4"
         >
           <ActivityFeed activities={state.activities} limit={25} />
@@ -743,7 +743,7 @@ function TimelineView() {
                   <button
                     key={task.id}
                     type="button"
-                    onClick={() => navigate(`/tasks?task=${task.id}`)}
+                    onClick={() => navigate(`/work/tasks?task=${task.id}`)}
                     className="flex w-full items-center gap-2 rounded-lg border border-line bg-card px-3 py-2 text-left transition hover:border-accent/30 hover:shadow-card"
                   >
                     <span className="min-w-0 flex-1">
@@ -751,7 +751,7 @@ function TimelineView() {
                         {task.title}
                       </span>
                       <span className="mt-0.5 block text-[9.5px] text-muted">
-                        {task.id} · {getClient(state, task.clientId)?.businessName ?? 'Personal'}
+                        {task.id} Â· {getClient(state, task.clientId)?.businessName ?? 'Personal'}
                       </span>
                     </span>
                     <PriorityBadge priority={task.priority} />
@@ -773,7 +773,7 @@ function TimelineView() {
             .map((project) => (
               <Link
                 key={project.id}
-                to={`/projects/${project.id}`}
+                to={`/work//projects/${project.id}`}
                 className="flex items-center gap-2.5 rounded-lg px-2 py-2.5 transition hover:bg-secondary/60"
               >
                 <div className="flex h-8 w-11 shrink-0 flex-col items-center justify-center rounded-lg border border-line bg-secondary/60">
@@ -811,13 +811,13 @@ function DashboardCalendar() {
   const eventsFor = (date: string) => {
     const tasks = state.tasks
       .filter((task) => task.dueDate === date && task.status !== 'completed')
-      .map((task) => ({ id: task.id, title: task.title, tone: 'task' as const, to: `/tasks?task=${task.id}` }));
+      .map((task) => ({ id: task.id, title: task.title, tone: 'task' as const, to: `/work//tasks?task=${task.id}` }));
     const invoices = state.invoices
       .filter((invoice) => invoice.dueDate === date && !invoice.draft && invoiceStatus(invoice, state.payments) !== 'Paid')
-      .map((invoice) => ({ id: invoice.id, title: `${invoice.id} due`, tone: 'invoice' as const, to: '/invoices' }));
+      .map((invoice) => ({ id: invoice.id, title: `${invoice.id} due`, tone: 'invoice' as const, to: '/work/invoices' }));
     const projects = state.projects
       .filter((project) => project.endDate === date && project.status !== 'Completed')
-      .map((project) => ({ id: project.id, title: `${project.name} due`, tone: 'project' as const, to: `/projects/${project.id}` }));
+      .map((project) => ({ id: project.id, title: `${project.name} due`, tone: 'project' as const, to: `/work//projects/${project.id}` }));
     return [...tasks, ...invoices, ...projects];
   };
 
@@ -943,3 +943,4 @@ function DashboardCalendar() {
     </div>
   );
 }
+

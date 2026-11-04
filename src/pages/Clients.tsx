@@ -189,7 +189,7 @@ export function ClientsPage() {
             <ClientCard
               key={client.id}
               client={client}
-              onOpen={() => navigate(`/clients/${client.id}`)}
+              onOpen={() => navigate(`/work//clients/${client.id}`)}
               onDelete={() => setDeleting(client)}
             />
           ))}
@@ -216,7 +216,7 @@ export function ClientsPage() {
                 const projects = state.projects.filter((project) => project.clientId === client.id);
                 const outstanding = clientOutstanding(state, client.id);
                 return (
-                  <TableRow key={client.id} onClick={() => navigate(`/clients/${client.id}`)}>
+                  <TableRow key={client.id} onClick={() => navigate(`/work//clients/${client.id}`)}>
                     <Td>
                       <div className="flex items-center gap-2.5">
                         <Avatar name={client.name} size="sm" />
@@ -259,7 +259,7 @@ export function ClientsPage() {
                         <ActionMenu
                           label={`Actions for ${client.businessName}`}
                           items={[
-                            { label: 'Open profile', onClick: () => navigate(`/clients/${client.id}`) },
+                            { label: 'Open profile', onClick: () => navigate(`/work//clients/${client.id}`) },
                             {
                               label: 'Edit client',
                               onClick: () => {
@@ -269,7 +269,7 @@ export function ClientsPage() {
                             },
                             {
                               label: 'Create invoice',
-                              onClick: () => navigate(`/invoices?create=1&client=${client.id}`),
+                              onClick: () => navigate(`/work//invoices?create=1&client=${client.id}`),
                             },
                             { label: 'Delete client', onClick: () => setDeleting(client), danger: true, separator: true },
                           ]}
