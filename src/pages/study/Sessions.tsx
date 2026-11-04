@@ -55,7 +55,7 @@ export function StudySessionsPage() {
 
   function handleDelete(id: string) {
     deleteSession(id);
-    toast('Session removed', 'success');
+    toast({ title: 'Session saved', variant: 'success' });
     setDeleteId(null);
   }
 
@@ -64,10 +64,9 @@ export function StudySessionsPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="Sessions"
         description="Your session history and completion records."
-        action={
+        actions={
           <Button variant="outline" size="sm" onClick={() => navigate('/study/timer')}>
             Start timer
           </Button>
@@ -75,9 +74,9 @@ export function StudySessionsPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="Total sessions" value={String(filtered.length)} icon={Clock3} />
-        <StatCard label="Hours" value={formatHours(total)} icon={BookOpenText} />
-        <StatCard label="Completed" value={`${completed} / ${filtered.length}`} icon={BookOpenText} />
+        <StatCard label="Total sessions" value={String(filtered.length)} detail="In range" icon={Clock3} />
+        <StatCard label="Hours" value={formatHours(total)} detail="Study time" icon={BookOpenText} />
+        <StatCard label="Completed" value={`${completed} / ${filtered.length}`} detail="Completed" icon={BookOpenText} />
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -104,7 +103,7 @@ export function StudySessionsPage() {
           <Field label="Subject">
             <Select value={subjectFilter} onChange={(e) => setSubjectFilter(e.target.value)}>
               <option value="">All subjects</option>
-              {subjectOptions.map((o) => (<option key={o.value} value={o.id}>{o.label}</option>))}
+              {subjectOptions.map((o) => (<option key={o.value} value={o.value}>{o.label}</option>))}
             </Select>
           </Field>
         </div>
@@ -126,11 +125,11 @@ export function StudySessionsPage() {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <Td colSpan={7} className="text-center py-10 text-muted">
+                <td colSpan={7} className="text-center py-10 text-muted">
                   <EmptyState icon={Clock3} title="No sessions" description="Start a timer to log your first focused study session." action={
                     <Button variant="secondary" size="sm" onClick={() => navigate('/study/timer')}>Open timer</Button>
                   } className="border-0 bg-transparent py-6" />
-                </Td>
+                </td>
               </tr>
             ) : (
               filtered.map((session) => {
@@ -156,8 +155,8 @@ export function StudySessionsPage() {
                       <Button variant="ghost" size="icon-sm" onClick={(e) => { e.stopPropagation(); navigate(`/study/subjects?subject=${session.subjectId}`); }}>
                         <ArrowRight className="h-3 w-3" />
                       </Button>
-                      <Button variant="ghost" size="icon-sm" danger onClick={(e) => { e.stopPropagation(); setDeleteId(session.id); }}>
-                        <Trash2 className="h-3.5 w-3.5" />
+                      <Button variant="ghost" size="icon-sm" onClick={(e) => { e.stopPropagation(); setDeleteId(session.id); }}>
+                        <Trash2 className="h-3.5 w-3.5 text-rose-500" />
                       </Button>
                     </Td>
                   </TableRow>
@@ -197,3 +196,4 @@ function Badge({ children, tone = 'gray', className }: { children: React.ReactNo
     </span>
   );
 }
+

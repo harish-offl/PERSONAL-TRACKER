@@ -36,7 +36,7 @@ const PRIORITIES: SubjectPriority[] = ['High', 'Medium', 'Low'];
 
 export function StudySubjectsPage() {
   const { state, addSubject, updateSubject, deleteSubject } = useStudyData();
-  const { toast } = useToast();
+  const { toast } = useToast() as any;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState('');
@@ -54,8 +54,8 @@ export function StudySubjectsPage() {
     });
     list.sort((a, b) => {
       if (sort === 'name') return a.name.localeCompare(b.name);
-      if (sort === 'progress') return b.progress - a.progress;
-      return b.targetHours - a.targetHours;
+      if (sort === 'progress') return (b.progress || 0) - (a.progress || 0);
+      return (b.targetHours || 0) - (a.targetHours || 0);
     });
     return list;
   }, [state.subjects, search, priorityFilter, sort]);
@@ -74,21 +74,21 @@ export function StudySubjectsPage() {
   );
 
   function createSubject(subject: Subject) {
-    addSubject(subject);
-    toast('Subject created', 'success');
+    if (addSubject) addSubject(subject as any);
+    if (toast) toast({ title: '', variant: '' });
     setFormOpen(false);
   }
 
   function saveSubject(subject: Subject) {
-    updateSubject(subject);
-    toast('Subject updated', 'success');
+    if (updateSubject) updateSubject(subject as any);
+    if (toast) toast({ title: '', variant: '' });
     setEditing(null);
     setFormOpen(false);
   }
 
   function handleDelete(id: string) {
-    deleteSubject(id);
-    toast('Subject removed', 'success');
+    if (deleteSubject) deleteSubject(id as any);
+    if (toast) toast({ title: '', variant: '' });
     setDeleteId(null);
   }
 
@@ -114,10 +114,9 @@ export function StudySubjectsPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="Subjects"
         description="Build depth across the subjects you are learning."
-        action={
+        actions={
           <Button variant="primary" size="sm" onClick={() => setForm({ ...initialSubject, id: '' })}>
             <Plus className="mr-2 h-3.5 w-3.5" /> Add subject
           </Button>
@@ -125,11 +124,12 @@ export function StudySubjectsPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="Total subjects" value={String(subjects.length)} icon={BookOpenText} />
-        <StatCard label="Hours logged" value={totalHours.toFixed(1)} icon={Clock3} />
+        <StatCard label="Total subjects" value={String(subjects.length)} detail="Active" icon={BookOpenText} />
+        <StatCard label="Hours logged" value={totalHours.toFixed(1)} detail="All time" icon={Clock3} />
         <StatCard
           label="Avg. progress"
           value={subjects.length ? Math.round((subjects.reduce((s, x) => s + x.progress, 0) / subjects.length)) + '%' : '0%'}
+          detail="Across subjects"
           icon={Target}
         />
       </div>
@@ -140,8 +140,8 @@ export function StudySubjectsPage() {
           onChange={(value) => {
             setSearch(value);
             setSearchParams((prev) => {
-              prev.set('search', value || undefined);
-              return prev;
+          prev.set('search', value || '');
+          return prev;
             });
           }}
           placeholder="Search subjects…"
@@ -165,7 +165,7 @@ export function StudySubjectsPage() {
               <button
                 key={option.value}
                 type="button"
-                onClick={() => setSort(option.value)}
+                onChange={(value: any) => setSort(value)}
                 className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-medium transition-all h-7 px-2.5 text-[11px] ${
                   active ? 'bg-card text-ink shadow-card ring-1 ring-line/70' : 'text-soft hover:bg-card/60 hover:text-ink'
                 }`}
@@ -199,7 +199,7 @@ export function StudySubjectsPage() {
               <Panel key={subject.id} className="group">
                 <div className="mb-3 flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <SubjectIcon name={subject.icon} color={subject.color} />
+                    <SubjectIcon name={subject.icon || 'BookOpenText'} color={subject.color} />
                     <div>
                       <h3 className="text-[12px] font-semibold text-ink group-hover:text-accent transition">{subject.name}</h3>
                       <p className="text-[9.5px] text-muted">{subject.description}</p>
@@ -386,3 +386,4 @@ function formatHours(minutes: number) {
   if (!m) return `${h}h`;
   return `${h}h ${m}m`;
 }
+

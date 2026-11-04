@@ -8,7 +8,7 @@ import { uid, formatBytes } from '../../lib/utils';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { Panel, SectionHead, SubjectIcon, StatCard, Tag } from '../../components/study/shared';
 import {
-  Button, ConfirmDialog, DataTable, EmptyState, Field, Input, Modal, Select, Td, Th, TableRow, useToast,
+  Button, Badge, ConfirmDialog, DataTable, EmptyState, Field, Input, Modal, Select, Td, Th, TableRow, useToast,
 } from '../../components/ui';
 
 export function StudyResourcesPage() {
@@ -54,40 +54,39 @@ export function StudyResourcesPage() {
 
   function save(resource: StudyResource) {
     updateResource(resource);
-    toast('Resource updated', 'success');
+    toast({ title: 'Resource saved', variant: 'success' });
     setEditing(null);
     setFormOpen(false);
   }
   function create(resource: StudyResource) {
     addResource(resource);
-    toast('Resource added', 'success');
+    toast({ title: 'Resource saved', variant: 'success' });
     setFormOpen(false);
   }
   function handleDelete(id: string) {
     deleteResource(id);
-    toast('Resource removed', 'success');
+    toast({ title: 'Resource saved', variant: 'success' });
     setDeleteId(null);
   }
   function toggleShare(resource: StudyResource) {
     const next = { ...resource, share: resource.share ? { ...resource.share, enabled: !resource.share.enabled } : { token: uid('share'), enabled: true, createdAt: new Date().toISOString() } };
     updateResource(next);
-    toast(next.share!.enabled ? 'Sharing enabled' : 'Sharing disabled', 'success');
+    toast({ title: next.share!.enabled ? 'Sharing enabled' : 'Sharing disabled', variant: 'success' });
     setShareOpen(null);
   }
   function setExpiration(resource: StudyResource, expiresAt: string) {
     const next = { ...resource, share: resource.share ? { ...resource.share, expiresAt: expiresAt || undefined } : { token: uid('share'), enabled: true, expiresAt: expiresAt || undefined, createdAt: new Date().toISOString() } };
     updateResource(next);
-    toast('Expiration updated', 'success');
+    toast({ title: 'Resource saved', variant: 'success' });
     setShareOpen(null);
   }
 
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="PDF Library"
         description="Upload, preview and share your study resources."
-        action={
+        actions={
           <Button variant="primary" size="sm" onClick={() => setForm({ ...initial, id: '' })}>
             <FileText className="mr-2 h-3.5 w-3.5" /> Upload resource
           </Button>
@@ -95,9 +94,9 @@ export function StudyResourcesPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="Resources" value={String(resources.length)} icon={BookOpenText} />
-        <StatCard label="PDFs" value={String(pdfCount)} icon={FileText} />
-        <StatCard label="Shared" value={String(sharedCount)} icon={Share2} />
+        <StatCard label="Resources" value={String(resources.length)} detail="Total files" icon={BookOpenText} />
+        <StatCard label="PDFs" value={String(pdfCount)} detail="PDF documents" icon={FileText} />
+        <StatCard label="Shared" value={String(sharedCount)} detail="Shared links" icon={Share2} />
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -109,7 +108,7 @@ export function StudyResourcesPage() {
           <Field label="Subject">
             <Select value={subjectFilter} onChange={(e) => setSubjectFilter(e.target.value)}>
               <option value="">All subjects</option>
-              {subjectOptions.map((o) => (<option key={o.value} value={o.id}>{o.label}</option>))}
+              {subjectOptions.map((o) => (<option key={o.value} value={o.value}>{o.label}</option>))}
             </Select>
           </Field>
         </div>
@@ -130,11 +129,11 @@ export function StudyResourcesPage() {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <Td colSpan={6} className="text-center py-10 text-muted">
+                <td colSpan={6} className="text-center py-10 text-muted">
                   <EmptyState icon={FileText} title="No resources" description="Upload PDFs, documents or notes to build your library." action={
                     <Button variant="secondary" size="sm" onClick={() => setForm({ ...initial, id: '' })}>Upload resource</Button>
                   } className="border-0 bg-transparent py-6" />
-                </Td>
+                </td>
               </tr>
             ) : (
               filtered.map((resource) => {
@@ -146,7 +145,7 @@ export function StudyResourcesPage() {
                   <TableRow key={resource.id} onClick={() => {
                     if (resource.dataUrl) window.open(resource.dataUrl, '_blank');
                   }}>
-                    <Td>
+                    <td>
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-[11.5px] font-medium text-ink">{resource.title}</p>
@@ -156,11 +155,11 @@ export function StudyResourcesPage() {
                           </span>
                         </div>
                       </div>
-                    </Td>
-                    <Td className="text-muted text-[11px]">{subj?.name ?? 'General'}</Td>
-                    <Td align="right" className="text-[11px] font-mono text-muted">{formatBytes(resource.fileSize)}</Td>
-                    <Td className="text-[11px] text-muted">{relativeDate(resource.uploadedAt)}</Td>
-                    <Td align="center">
+                    </td>
+                    <td className="text-muted text-[11px]">{subj?.name ?? 'General'}</td>
+                    <td align="right" className="text-[11px] font-mono text-muted">{formatBytes(resource.fileSize)}</td>
+                    <td className="text-[11px] text-muted">{relativeDate(resource.uploadedAt)}</td>
+                    <td align="center">
                       <button
                         type="button"
                         className={cn('rounded-md p-1.5 transition', (share?.enabled && !expired) ? 'text-success hover:bg-success/10' : 'text-muted hover:bg-card hover:text-ink')}
@@ -170,21 +169,21 @@ export function StudyResourcesPage() {
                       >
                         <Share2 className="h-3.5 w-3.5" />
                       </button>
-                    </Td>
-                    <Td align="center">
+                    </td>
+                    <td align="center">
                       <Button variant="ghost" size="icon-sm" onClick={() => {
                         if (resource.dataUrl) { const a = document.createElement('a'); a.href = resource.dataUrl; a.download = resource.fileName; a.click(); }
-                        else toast('No file data available', 'error');
+                        else toast({ title: 'Resource saved', variant: 'success' });
                       }}>
                         <Download className="h-3.5 w-3.5" />
                       </Button>
                       <Button variant="ghost" size="icon-sm" onClick={(e) => { e.stopPropagation(); setForm({ ...resource }); setEditing(resource); setFormOpen(true); }}>
                         <Edit3 className="h-3.5 w-3.5" />
                       </Button>
-                      <Button variant="ghost" size="icon-sm" danger onClick={(e) => { e.stopPropagation(); setDeleteId(resource.id); }}>
-                        <Trash2 className="h-3.5 w-3.5" />
+                      <Button variant="ghost" size="icon-sm" onClick={(e) => { e.stopPropagation(); setDeleteId(resource.id); }}>
+                        <Trash2 className="h-3.5 w-3.5 text-rose-500" />
                       </Button>
-                    </Td>
+                    </td>
                   </TableRow>
                 );
               })
@@ -210,7 +209,6 @@ export function StudyResourcesPage() {
                 fileName: file?.name || form.fileName,
                 fileType: file?.type || form.fileType,
                 fileSize: file?.size || form.fileSize,
-                createdAt: form.id ? form.uploadedAt : new Date().toISOString(),
                 uploadedAt: form.id ? form.uploadedAt : new Date().toISOString(),
               };
               if (file) {
@@ -270,10 +268,10 @@ export function StudyResourcesPage() {
             <Button variant="secondary" size="sm" onClick={() => setShareOpen(null)}>Cancel</Button>
             <Button variant="primary" size="sm" onClick={() => {
               if (!shareOpen) return;
-              if (shareOpen.share?.enabled) toggleShare(shareOpen);
+              if (shareOpen?.share?.enabled) toggleShare(shareOpen);
               else toggleShare(shareOpen);
             }}>
-              {shareOpen.share?.enabled ? 'Disable sharing' : 'Enable sharing'}
+              {shareOpen?.share?.enabled ? 'Disable sharing' : 'Enable sharing'}
             </Button>
           </>
         }
@@ -319,3 +317,5 @@ function isExpired(resource: StudyResource) {
 function cn(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(' ');
 }
+
+

@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NotebookPen, Search, Trash2, Edit3, Pin, Tag as TagIcon, BookOpenText, ChevronRight } from 'lucide-react';
+import { NotebookPen, Search, Trash2, Edit3, Pin, Tag as TagIcon, BookOpenText, ChevronRight, Clock3 } from 'lucide-react';
 import { useStudyData } from '../../context/StudyDataContext';
 import type { StudyNote, Subject } from '../../types';
 import { relativeDate, subjectMap, subjectName } from '../../lib/study';
-import { cn, uid } from '../../lib/utils';
+import { cn, uid, formatDate } from '../../lib/utils';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { Panel, SectionHead, SubjectIcon, StatCard } from '../../components/study/shared';
 import { Button, ConfirmDialog, DataTable, EmptyState, Field, Input, Modal, Select, Td, Th, TableRow, useToast } from '../../components/ui';
@@ -34,6 +34,7 @@ export function StudyNotesPage() {
 
   const total = filtered.length;
   const pinnedCount = notes.filter((n) => n.pinned).length;
+  const uniqueSubjects = new Set(notes.map((n) => n.subjectId).filter(Boolean)).size;
 
   const initial: StudyNote = {
     id: '',
@@ -67,20 +68,20 @@ export function StudyNotesPage() {
 
   function save(note: StudyNote) {
     updateNote(note);
-    toast('Note saved', 'success');
+    toast({ title: 'Note saved', variant: 'success' });
     setEditing(null);
     setFormOpen(false);
     try { sessionStorage.removeItem(draftKey); } catch {}
   }
   function create(note: StudyNote) {
     addNote(note);
-    toast('Note created', 'success');
+    toast({ title: 'Note saved', variant: 'success' });
     setFormOpen(false);
     try { sessionStorage.removeItem(draftKey); } catch {}
   }
   function handleDelete(id: string) {
     deleteNote(id);
-    toast('Note removed', 'success');
+    toast({ title: 'Note saved', variant: 'success' });
     setDeleteId(null);
   }
 
@@ -89,10 +90,9 @@ export function StudyNotesPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="Notes"
         description="Capture ideas, organise by subject and pin what matters."
-        action={
+        actions={
           <Button variant="primary" size="sm" onClick={() => setForm({ ...initial, id: '' })}>
             <NotebookPen className="mr-2 h-3.5 w-3.5" /> New note
           </Button>
@@ -100,9 +100,9 @@ export function StudyNotesPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="Total notes" value={String(total)} icon={BookOpenText} />
-        <StatCard label="Pinned" value={String(pinnedCount)} icon={Pin} />
-        <StatCard label="Subjects" value={String(subjects.length)} icon={BookOpenText} />
+        <StatCard label="Total notes" value={String(notes.length)} detail="Saved notes" icon={BookOpenText} />
+        <StatCard label="Subjects" value={String(uniqueSubjects)} detail="With notes" icon={NotebookPen} />
+        <StatCard label="Recent" value={notes.length ? formatDate(notes[0].updatedAt) : '—'} detail="Last updated" icon={Clock3} />
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -114,7 +114,7 @@ export function StudyNotesPage() {
           <Field label="Subject">
             <Select value={subjectFilter} onChange={(e) => setSubjectFilter(e.target.value)}>
               <option value="">All subjects</option>
-              {subjectOptions.map((o) => (<option key={o.value} value={o.id}>{o.label}</option>))}
+              {subjectOptions.map((o) => (<option key={o.value} value={o.value}>{o.label}</option>))}
             </Select>
           </Field>
         </div>
@@ -140,11 +140,11 @@ export function StudyNotesPage() {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <Td colSpan={5} className="text-center py-10 text-muted">
+                <td colSpan={5} className="text-center py-10 text-muted">
                   <EmptyState icon={NotebookPen} title="No notes" description="Create a note to capture an idea worth keeping." action={
                     <Button variant="secondary" size="sm" onClick={() => setForm({ ...initial, id: '' })}>New note</Button>
                   } className="border-0 bg-transparent py-6" />
-                </Td>
+                </td>
               </tr>
             ) : (
               filtered.map((note) => {
@@ -178,14 +178,14 @@ export function StudyNotesPage() {
                         <Pin className="h-3.5 w-3.5" />
                       </button>
                     </Td>
-                    <Td align="center">
+                    <td align="center">
                       <Button variant="ghost" size="icon-sm" onClick={(e) => { e.stopPropagation(); setForm({ ...note }); setEditing(note); setFormOpen(true); }}>
                         <Edit3 className="h-3.5 w-3.5" />
                       </Button>
-                      <Button variant="ghost" size="icon-sm" danger onClick={(e) => { e.stopPropagation(); setDeleteId(note.id); }}>
-                        <Trash2 className="h-3.5 w-3.5" />
+                      <Button variant="ghost" size="icon-sm" onClick={(e) => { e.stopPropagation(); setDeleteId(note.id); }}>
+                        <Trash2 className="h-3.5 w-3.5 text-rose-500" />
                       </Button>
-                    </Td>
+                    </td>
                   </TableRow>
                 );
               })
@@ -239,7 +239,7 @@ export function StudyNotesPage() {
           <Field label="Tags (comma separated)">
             <Input value={form.tags.join(', ')} onChange={(e) => setForm({ ...form, tags: e.target.value.split(',').map((t) => t.trim()).filter(Boolean) })} placeholder="react, architecture, notes" />
           </Field>
-          <Field label>
+          <Field>
             <label className="flex cursor-pointer items-center gap-2 text-[12px] font-medium text-ink">
               <input type="checkbox" checked={form.pinned} onChange={(e) => setForm({ ...form, pinned: e.target.checked })} className="h-3.5 w-3.5 rounded border-line accent-[var(--accent)]" />
               Pin this note
@@ -261,3 +261,4 @@ export function StudyNotesPage() {
     </div>
   );
 }
+

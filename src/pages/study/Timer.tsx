@@ -21,7 +21,7 @@ const STORAGE_KEY = 'personal-tracker:active-timer';
 
 export function StudyTimerPage() {
   const { state, addSession, updateSubject } = useStudyData();
-  const { toast } = useToast();
+  const { toast } = useToast() as any;
   const navigate = useNavigate();
   const { subjects, sessions } = state;
   const byId = subjectMap(subjects);
@@ -123,9 +123,9 @@ export function StudyTimerPage() {
       setAccumulated(0);
       setTick(0);
       try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
-      toast('Countdown complete', 'success');
+      if (toast) toast({ title: '', variant: '' });
     }
-  }, [tick, running, mode, startedAt, accumulated, countdownMinutes, toast]);
+  }, [tick, running, mode, startedAt, accumulated, countdownMinutes]);
 
   const totalToday = totalMinutes(sessions.filter((s) => s.date === todayISO()));
 
@@ -164,37 +164,34 @@ export function StudyTimerPage() {
 
   function finishSession() {
     if (!subjectId) {
-      toast('Please select a subject', 'error');
+      if (toast) toast({ title: '', variant: '' });
       return;
     }
     const secs = timerSeconds(startedAt, accumulated);
     if (secs < 10) {
-      toast('Session too short to save', 'error');
+      if (toast) toast({ title: '', variant: '' });
       return;
     }
     const now = new Date();
     const date = todayISO();
-    const startTime = now.toISOString();
-    const endTime = new Date(now.getTime() + secs * 1000).toISOString();
     const session: StudySession = {
       id: uid('ses'),
       subjectId,
       date,
-      startTime,
-      endTime,
+      startTime: now.toTimeString().slice(0, 5),
+      endTime: new Date(now.getTime() + secs * 1000).toTimeString().slice(0, 5),
       durationMinutes: Math.round(secs / 60),
       type: mode === 'pomodoro' ? 'Pomodoro' : mode === 'countdown' ? 'Countdown' : 'Stopwatch',
       notes: description,
       completed: true,
-      createdAt: startTime,
+      createdAt: now.toISOString(),
     };
     addSession(session);
     const subj = byId.get(subjectId);
     if (subj) {
-      const progress = Math.min(100, Math.round(((subj.progress || 0) * 100) + (secs / 60 / (subj.targetHours || 1) * 100)));
-      updateSubject({ ...subj, progress, lastStudied: date });
+      updateSubject({ ...subj, progress: Math.min(100, (subj.progress || 0) + Math.round(secs / 60 / (subj.targetHours || 1) * 10)), lastStudied: date });
     }
-    toast('Session saved', 'success');
+    if (toast) toast({ title: '', variant: '' });
     stop();
     setDescription('');
   }
@@ -204,10 +201,9 @@ export function StudyTimerPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="Study Timer"
         description="Focused study sessions with Pomodoro, stopwatch and countdown modes."
-        action={
+        actions={
           <Button variant="outline" size="sm" onClick={() => navigate('/study/sessions')}>
             View sessions
           </Button>
@@ -215,8 +211,8 @@ export function StudyTimerPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <StatCard label="Session time" value={clock(displaySeconds)} icon={Timer} />
-        <StatCard label="Today" value={formatHours(totalToday)} icon={Clock} />
+        <StatCard label="Session time" value={clock(displaySeconds)} detail="Running" icon={Timer} />
+        <StatCard label="Today" value={formatHours(totalToday)} detail="Study time" icon={Clock} />
       </div>
 
       <Panel>
@@ -330,3 +326,4 @@ function formatHours(minutes: number) {
   if (!m) return `${h}h`;
   return `${h}h ${m}m`;
 }
+

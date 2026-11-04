@@ -67,7 +67,7 @@ export function PortalLoginPage({ portal }: { portal: Portal }) {
       setError(result.error ?? 'Unable to sign in. Please try again.');
       return;
     }
-    toast(`Welcome to ${copy.eyebrow}`, 'success');
+    toast({ title: `Welcome to ${copy.eyebrow}`, variant: 'success' });
     navigate(copy.path, { replace: true });
   }
 

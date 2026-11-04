@@ -31,18 +31,17 @@ export function StudyCalendarPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="Study Calendar"
         description="Scheduled sessions, exams and reminders at a glance."
-        action={
+        actions={
           <Button variant="outline" size="sm" onClick={() => navigate('/study/timetable')}>Timetable</Button>
         }
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="This month" value={String(sessions.filter((s) => s.date.slice(0, 7) === month.toISOString().slice(0, 7)).length)} icon={CalendarDays} />
-        <StatCard label="Upcoming events" value={String(events.filter((e) => e.date >= today).length)} icon={Clock} />
-        <StatCard label="Total sessions" value={String(sessions.length)} icon={BookOpenText} />
+        <StatCard label="This month" value={String(sessions.filter((s) => s.date.slice(0, 7) === month.toISOString().slice(0, 7)).length)} detail="Sessions logged" icon={CalendarDays} />
+        <StatCard label="Upcoming events" value={String(events.filter((e) => e.date >= today).length)} detail="Events scheduled" icon={Clock} />
+        <StatCard label="Total sessions" value={String(sessions.length)} detail="All time" icon={BookOpenText} />
       </div>
 
       <Panel>
@@ -173,3 +172,4 @@ export function StudyCalendarPage() {
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
+

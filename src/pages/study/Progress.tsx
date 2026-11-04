@@ -60,10 +60,9 @@ export function StudyProgressPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
         title="Progress"
         description="Visual charts and trends across your learning."
-        action={
+        actions={
           <Button variant="outline" size="sm" onClick={() => window.print()}>
             Export
           </Button>
@@ -71,9 +70,9 @@ export function StudyProgressPage() {
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label="Total hours" value={totalHours.toFixed(1)} icon={Clock3} />
-        <StatCard label="This week" value={weekHours.toFixed(1)} icon={TrendingUp} tone="info" />
-        <StatCard label="Weekly goal" value={`${weeklyPct}% of ${weeklyTarget}h`} icon={Target} tone="warning" />
+        <StatCard label="Total hours" value={totalHours.toFixed(1)} detail="All logged" icon={Clock3} />
+        <StatCard label="This week" value={weekHours.toFixed(1)} detail={`${weeklyPct}% of ${weeklyTarget}h`} icon={TrendingUp} tone="info" />
+        <StatCard label="Weekly goal" value={`${weeklyPct}%`} detail={`${weeklyTarget}h target`} icon={Target} tone="warning" />
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[1.55fr_1fr]">
@@ -201,3 +200,4 @@ export function StudyProgressPage() {
     </div>
   );
 }
+

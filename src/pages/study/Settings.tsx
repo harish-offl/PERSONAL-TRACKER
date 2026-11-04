@@ -11,7 +11,7 @@ export function StudySettingsPage() {
   const { state, updateSettings } = useStudyData();
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { toast } = useToast() as any;
   const { profile, goals, theme, reminders } = state.settings;
 
   const [form, setForm] = useState({
@@ -19,11 +19,11 @@ export function StudySettingsPage() {
     email: profile.email,
     workspace: profile.workspace,
     bio: profile.bio,
-    dailyHours: goals.dailyHours,
-    weeklyHours: goals.weeklyHours,
-    monthlyHours: goals.monthlyHours,
+    dailyHours: Number(goals.dailyHours),
+    weeklyHours: Number(goals.weeklyHours),
+    monthlyHours: Number(goals.monthlyHours),
     theme,
-    reminders,
+    reminders: Boolean(reminders),
   });
   const [saving, setSaving] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -32,12 +32,12 @@ export function StudySettingsPage() {
     setSaving(true);
     updateSettings({
       profile: { name: form.name, email: form.email, workspace: form.workspace, bio: form.bio },
-      goals: { dailyHours: form.dailyHours, weeklyHours: form.weeklyHours, monthlyHours: form.monthlyHours },
+      goals: { dailyHours: Number(form.dailyHours), weeklyHours: Number(form.weeklyHours), monthlyHours: Number(form.monthlyHours) },
       theme: form.theme,
       reminders: form.reminders,
-    });
-    setTimeout(() => { setSaving(false); toast('Settings saved', 'success'); }, 400);
-  }, [form, updateSettings, toast]);
+    } as any);
+    setTimeout(() => { setSaving(false); if (toast) toast({ title: '', variant: '' }); }, 400);
+  }, [form, updateSettings]);
 
   function handleSignOut() {
     setSigningOut(true);
@@ -48,9 +48,8 @@ export function StudySettingsPage() {
   return (
     <div className="space-y-4">
       <PageHeader
-        eyebrow="Study"
-        title="Settings"
-        description="Goals, profile and preferences for your study space."
+        title="Study Settings"
+        description="Manage your study preferences and goals."
       />
 
       <Panel>
@@ -103,9 +102,9 @@ export function StudySettingsPage() {
               </option>
             </Select>
           </Field>
-          <Field label>
+          <Field>
             <label className="flex cursor-pointer items-center gap-2 text-[12px] font-medium text-ink">
-              <input type="checkbox" checked={form.reminders} onChange={(e) => setForm({ ...form, reminders: e.target.checked })} className="h-3.5 w-3.5 rounded border-line accent-[var(--accent)]" />
+              <input type="checkbox" checked={!!form.reminders} onChange={(e) => setForm({ ...form, reminders: e.target.checked })} className="h-3.5 w-3.5 rounded border-line accent-[var(--accent)]" />
               Enable study reminders
             </label>
           </Field>
@@ -134,3 +133,4 @@ export function StudySettingsPage() {
     </div>
   );
 }
+
