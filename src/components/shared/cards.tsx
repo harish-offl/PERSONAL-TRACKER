@@ -13,6 +13,7 @@ import {
   ListChecks,
   MessageSquare,
   Plus,
+  Receipt,
   Sparkles,
   TrendingDown,
   TrendingUp,
@@ -618,6 +619,7 @@ const activityIcon = {
   work: Clock3,
   document: Files,
   system: Sparkles,
+  expense: Receipt,
 };
 
 const activityTone = {
@@ -629,6 +631,7 @@ const activityTone = {
   work: 'text-cyan-600 bg-cyan-50 dark:bg-cyan-500/10 dark:text-cyan-400',
   document: 'text-amber-600 bg-amber-50 dark:bg-amber-500/10 dark:text-amber-400',
   system: 'text-soft bg-secondary',
+  expense: 'text-rose-600 bg-rose-50 dark:bg-rose-500/10 dark:text-rose-400',
 };
 
 export function ActivityFeed({

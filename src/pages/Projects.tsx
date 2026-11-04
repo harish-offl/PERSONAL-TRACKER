@@ -353,15 +353,23 @@ function ProjectTimeline({ projects, onOpen }: { projects: Project[]; onOpen: (i
 
   const barColor: Record<ProjectStatus, string> = {
     Planning: 'bg-info/25',
+    Started: 'bg-accent/20',
     Active: 'bg-accent/20',
+    'In Progress': 'bg-cyan/20',
     'On Hold': 'bg-warning/20',
+    Review: 'bg-amber/20',
     Completed: 'bg-success/20',
+    Cancelled: 'bg-muted/20',
   };
   const barInner: Record<ProjectStatus, string> = {
     Planning: 'bg-info',
+    Started: 'bg-accent',
     Active: 'bg-accent',
+    'In Progress': 'bg-cyan',
     'On Hold': 'bg-warning',
+    Review: 'bg-amber',
     Completed: 'bg-success',
+    Cancelled: 'bg-muted',
   };
 
   return (

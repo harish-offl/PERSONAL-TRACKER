@@ -298,9 +298,9 @@ export function PortalsPage() {
                   <StatMini icon={TrendingUp} label="Project Value" value="$0" color="#12B76A" />
                 </div>
                 <div className="grid grid-cols-3 gap-3">
-                  <CardMini title="In Flight" count="3" color="#FF5636" />
-                  <CardMini title="Review & Verify" count="2" color="#8B4DE8" />
-                  <CardMini title="Completed Today" count="5" color="#12B76A" />
+                  <CardMini title="In Flight" count={3} color="#FF5636" />
+                  <CardMini title="Review & Verify" count={2} color="#8B4DE8" />
+                  <CardMini title="Completed Today" count={5} color="#12B76A" />
                 </div>
               </div>
             </div>
@@ -328,7 +328,7 @@ export function PortalsPage() {
             <ProblemCard
               title="The Fractured Workflow"
               sub="₹7,200/mo in fees"
-              icon={Lightning}
+              icon={Zap}
               color="#ba1a1a"
               items={[
                 { label: 'Context-Switching Fatigue', detail: 'Notion for docs, Toggl for pomodoros, QuickBooks for client GST invoices, Apple Notes for research.' },
@@ -368,12 +368,12 @@ export function PortalsPage() {
               </p>
             </div>
             <div className="text-right hidden lg:block">
-              <Link
+              <a
                 href="#pricing"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5636] hover:underline"
               >
                 View Pricing <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -517,16 +517,16 @@ export function PortalsPage() {
                 <li><Link to="#features" className="hover:text-[#FF5636] transition-colors">Features</Link></li>
                 <li><Link to="#solutions" className="hover:text-[#FF5636] transition-colors">Solutions</Link></li>
                 <li><Link to="#pricing" className="hover:text-[#FF5636] transition-colors">Pricing</Link></li>
-                <li><Link href="#testimonials" className="hover:text-[#FF5636] transition-colors">Wall of Love</Link></li>
+                <li><a href="#testimonials" className="hover:text-[#FF5636] transition-colors">Wall of Love</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-xs font-bold uppercase tracking-wider text-[#6E6E6C] mb-6">Legal &amp; Trust</h4>
               <ul className="space-y-3 text-sm text-[#6E6E6C]">
-                <li><Link href="#" className="hover:text-[#FF5636] transition-colors">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:text-[#FF5636] transition-colors">Terms of Service</Link></li>
-                <li><Link href="#" className="hover:text-[#FF5636] transition-colors">Security &amp; SOC2</Link></li>
-                <li><Link href="#" className="hover:text-[#FF5636] transition-colors">Cookie Settings</Link></li>
+                <li><a href="#" className="hover:text-[#FF5636] transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-[#FF5636] transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-[#FF5636] transition-colors">Security &amp; SOC2</a></li>
+                <li><a href="#" className="hover:text-[#FF5636] transition-colors">Cookie Settings</a></li>
               </ul>
             </div>
             <div>
@@ -560,9 +560,9 @@ export function PortalsPage() {
           <div className="border-t border-[#EBEBEA] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#6E6E6C]">
             <p>© 2026 Luminous Technologies Inc. All rights reserved.</p>
             <div className="flex gap-6">
-              <Link href="#" className="hover:text-[#FF5636] transition-colors">Status</Link>
-              <Link href="#" className="hover:text-[#FF5636] transition-colors">Changelog</Link>
-              <Link href="#" className="hover:text-[#FF5636] transition-colors">Support</Link>
+              <a href="#" className="hover:text-[#FF5636] transition-colors">Status</a>
+              <a href="#" className="hover:text-[#FF5636] transition-colors">Changelog</a>
+              <a href="#" className="hover:text-[#FF5636] transition-colors">Support</a>
             </div>
           </div>
         </div>

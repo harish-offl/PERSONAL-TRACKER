@@ -60,6 +60,7 @@ const modeIcon: Record<PaymentMode, LucideIcon> = {
   Cash: Banknote,
   Card: CreditCard,
   Cheque: FileText,
+  Other: Wallet,
 };
 
 type PaymentSort = 'newest' | 'oldest' | 'amount';

@@ -71,13 +71,18 @@ const INVOICE_STATUS_COLORS: Record<InvoiceStatus, string> = {
   Sent: '#3B82F6',
   Overdue: '#EF4444',
   Draft: '#858585',
+  Cancelled: '#94A3B8',
 };
 
 const PROJECT_STATUS_COLORS: Record<ProjectStatus, string> = {
   Active: '#6558D3',
+  Started: '#3B82F6',
   Planning: '#3B82F6',
+  'In Progress': '#06B6D4',
   'On Hold': '#F59E0B',
+  Review: '#F59E0B',
   Completed: '#16A34A',
+  Cancelled: '#94A3B8',
 };
 
 const TASK_STATUS_COLORS: Record<TaskStatus, string> = {

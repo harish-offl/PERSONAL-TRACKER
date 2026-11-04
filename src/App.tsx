@@ -58,7 +58,7 @@ function NotFoundPage() {
   );
 }
 
-function CompassIcon() {
+function CompassIcon({ className }: { className?: string }) {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z" stroke="currentColor" strokeWidth="1.5" />
